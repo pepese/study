@@ -66,6 +66,10 @@ Macデフォルトのターミナルより便利。
 - ```brew list```でgitが含まれているか確認
 - ```git --version```で確認
 
+Gitの使い方は以下。
+
+[http://blog.pepese.com/entry/2017/02/17/182311:embed:cite]
+
 ## anyenvをインストール
 
 - [公式](https://github.com/riywo/anyenv)を参照

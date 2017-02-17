@@ -3,7 +3,9 @@ Gitのメモ。
 # 環境構築
 
 ## GitHubのアカウントを作成
-下記でGitHubのアカウントを作成
+
+下記でGitHubのアカウントを作成。
+
 - https://github.com/
 - ちなみに自分のアカウント
   - https://github.com/pepese
@@ -21,7 +23,7 @@ Gitのメモ。
 
 以下を参照。
 
-[http://blog.pepese.com/entry/2016/11/23/174208:embed:cite]  
+[http://blog.pepese.com/entry/2016/11/23/174208:embed:cite]
 
 ### Gitクライアント設定
 
@@ -141,7 +143,7 @@ $ git checkout <branchname>
 
 一連の流れは以下。
 
- ```sh
+```sh
 $ git branch issue1
 $ git branch
   issues1

@@ -34,27 +34,27 @@ Spring BOM 2.0.8.RELEASEで動確した。
 
 ## pom.xml
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-java/blob/master/pom.xml?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-java/pom.xml?footer=0"></script>
 
 ## AppConfig.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-java/blob/master/src/main/java/com/pepese/sample/config/AppConfig.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-java/src/main/java/com/pepese/sample/config/AppConfig.java?footer=0"></script>
 
 ## WebMvcConfig.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-java/blob/master/src/main/java/com/pepese/sample/config/WebMvcConfig.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-java/src/main/java/com/pepese/sample/config/WebMvcConfig.java?footer=0"></script>
 
 ## WebInitializer.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-java/blob/master/src/main/java/com/pepese/sample/config/WebInitializer.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-java/src/main/java/com/pepese/sample/config/WebInitializer.java?footer=0"></script>
 
 ## HelloController.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-java/blob/master/src/main/java/com/pepese/sample/controller/HelloController.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-java/src/main/java/com/pepese/sample/controller/HelloController.java?footer=0"></script>
 
 ## HelloService.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-java/blob/master/src/main/java/com/pepese/sample/service/HelloService.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-java/src/main/java/com/pepese/sample/service/HelloService.java?footer=0"></script>
 
 ```mvn clean package``` してTomcatにデプロイすれば動く。
 
@@ -75,14 +75,14 @@ Spring BOM 2.0.8.RELEASEで動確した。
 
 ## applicationContext.xml
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-xml/blob/master/src/main/resources/META-INF/spring/applicationContext.xml?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-xml/src/main/resources/META-INF/spring/applicationContext.xml?footer=0"></script>
 
 ## spring-mvc.xml
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-xml/blob/master/src/main/resources/META-INF/spring/spring-mvc.xml?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-xml/src/main/resources/META-INF/spring/spring-mvc.xml?footer=0"></script>
 
 ## web.xml
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springmvc-sample-xml/blob/master/src/main/webapp/WEB-INF/web.xml?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springmvc-sample-xml/src/main/webapp/WEB-INF/web.xml?footer=0"></script>
 
 ```mvn clean package``` してTomcatにデプロイすれば動く。

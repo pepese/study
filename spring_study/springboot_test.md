@@ -4,7 +4,7 @@ spring-boot-starter-testを使用するとコントローラのJUnitテストも
 
 
 
-[http://blog.pepese.com/entry/20150403/1428036892:embed:cite]
+[http://blog.pepese.com/entry/2017/02/17/161526:embed:cite]
 
 
 
@@ -27,7 +27,7 @@ spring-boot-starter-testを使用するとコントローラのJUnitテストも
 
 ## サービスのテスト（com.pepese.sample.service.HelloServiceTest）
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/test/java/com/pepese/sample/service/HelloServiceTest.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/test/java/com/pepese/sample/service/HelloServiceTest.java?footer=0"></script>
 
 
 ポイントは以下。
@@ -41,7 +41,7 @@ Springの設定（Java/XML Based Configuration）を読み込んでいるのでD
 
 ## コントローラのテスト（com.pepese.sample.controller.HelloControllerTest）
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/test/java/com/pepese/sample/controller/HelloControllerTest.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/test/java/com/pepese/sample/controller/HelloControllerTest.java?footer=0"></script>
 
 ポイントは以下。
 

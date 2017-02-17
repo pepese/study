@@ -58,32 +58,32 @@ $ tree -a -I 'node_modules'
 
 ## package.json
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/es6-sample/blob/master/package.json?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/es6-sample/package.json?footer=0"></script>
 
 ```npm run build``` でES6のトランスパイル、```npm run start``` で簡易Webサーバが起動する。
 
 ## .babelrc
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/es6-sample/blob/master/.babelrc?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/es6-sample/.babelrc?footer=0"></script>
 
 ここでトランスパイル対象の種類を指定する。
 
 ## webpack.config.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/es6-sample/blob/master/webpack.config.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/es6-sample/webpack.config.js?footer=0"></script>
 
 webpackの設定ファイル。  
 ```npm run build``` でES6のトランスパイル、```npm run start``` で簡易Webサーバが起動するように ```package.json``` にスクリプトを設定している。
 
 ## index.html
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/es6-sample/blob/master/dist/index.html?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/es6-sample/dist/index.html?footer=0"></script>
 
 トランスパイル後のJSコードをロードしている。
 
 ## app.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/es6-sample/blob/master/src/app.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/es6-sample/src/app.js?footer=0"></script>
 
 ## 実行方法
 

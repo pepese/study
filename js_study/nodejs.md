@@ -131,11 +131,11 @@ Node.jsのAPIリファレンスは[ここ](https://nodejs.org/api/)。
 
 ■hello.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/nodejs-sample/blob/master/hello.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/nodejs-sample/hello.js?footer=0"></script>
 
 ■main.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/nodejs-sample/blob/master/main.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/nodejs-sample/main.js?footer=0"></script>
 
 上記JSファイルを作成して下記を実行。
 
@@ -152,7 +152,7 @@ Node.jsでHTTPサービスを立ち上げてみる。
 
 ■app.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/nodejs-sample/blob/master/app.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/nodejs-sample/app.js?footer=0"></script>
 
 下記を実行してブラウザで ```http://127.0.0.1:1337/``` へアクセスすると「Hello World !」と表示される。
 

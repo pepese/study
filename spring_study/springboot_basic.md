@@ -37,27 +37,27 @@ Spring Bootで最小アプリケーションが動くまでの設定について
 
 ## pom.xml
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/pom.xml?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/pom.xml?footer=0"></script>
 
 ## Application.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/main/java/com/pepese/sample/Application.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/main/java/com/pepese/sample/Application.java?footer=0"></script>
 
 ## AppConfig.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/main/java/com/pepese/sample/config/AppConfig.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/main/java/com/pepese/sample/config/AppConfig.java?footer=0"></script>
 
 ## WebMvcConfig.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/main/java/com/pepese/sample/config/WebMvcConfig.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/main/java/com/pepese/sample/config/WebMvcConfig.java?footer=0"></script>
 
 ## HelloController.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/main/java/com/pepese/sample/controller/HelloController.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/main/java/com/pepese/sample/controller/HelloController.java?footer=0"></script>
 
 ## HelloService.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-jar/blob/master/src/main/java/com/pepese/sample/service/HelloService.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-jar/src/main/java/com/pepese/sample/service/HelloService.java?footer=0"></script>
 
 ## 実行
 
@@ -88,11 +88,11 @@ Spring Bootで最小アプリケーションが動くまでの設定について
 
 ## pom.xml
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-war/blob/master/pom.xml?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-war/pom.xml?footer=0"></script>
 
 ## ServletInitializer.java
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/springboot-sample-war/blob/master/src/main/java/com/pepese/sample/ServletInitializer.java?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/spring-sample/blob/master/springboot-sample-war/src/main/java/com/pepese/sample/ServletInitializer.java?footer=0"></script>
 
 ## 実行
 

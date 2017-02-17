@@ -139,7 +139,7 @@ respond with a resource
 
 ### app.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/express-sample/blob/master/app.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app.js?footer=0"></script>
 
 - 各種ライブラリのロード（ ```var xxx = require('xxx');``` ）
 - ルーティング先コントローラ層ロジックのロード（ ```var xxx = require('./routes/xxx');``` ）
@@ -152,8 +152,8 @@ respond with a resource
 
 ### index.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/express-sample/blob/master/routes/index.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/routes/index.js?footer=0"></script>
 
 ### users.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/express-sample/blob/master/routes/users.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/routes/users.js?footer=0"></script>

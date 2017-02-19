@@ -48,6 +48,9 @@ $ touch tsconfig.json
 
 https://angular.io/docs/ts/latest/guide/webpack.html  
 TypeScript+webpack+Angular公式設定系ガイド
+↓
+うごかない。。。↓がヒントになりそう  
+https://github.com/ovrmrw/angular2-5minquickstart-webpack
 
 # 話題
 

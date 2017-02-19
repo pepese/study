@@ -47,7 +47,7 @@ $ touch tsconfig.json
 # 参考
 
 https://angular.io/docs/ts/latest/guide/webpack.html  
-TypeScript+Angular公式設定系ガイド
+TypeScript+webpack+Angular公式設定系ガイド
 
 # 話題
 

@@ -1,4 +1,11 @@
 
+<<<<<<< HEAD
+=======
+
+
+# 参考
+
+>>>>>>> origin/master
 Angular2をWebpackで始めるための最小構成
 https://github.com/shumpei/angular2-webpack-starter-minimum
 
@@ -16,3 +23,10 @@ http://www.slideshare.net/shumpei/angular2-59809652
 
 「Angular 2」の構成単位「コンポーネント」「モジュール」を使いこなそう
 https://codezine.jp/article/detail/9700
+<<<<<<< HEAD
+=======
+
+Angular CLI
+https://github.com/angular/angular-cli
+まだBeta版
+>>>>>>> origin/master

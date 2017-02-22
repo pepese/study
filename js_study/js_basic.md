@@ -119,3 +119,7 @@ delete function(){}();
 
 - [参考](http://web-design-felica.hatenablog.com/entry/20160511/p1)
 - [公式](https://developer.mozilla.org/ja/docs/Web/API/Window)
+<<<<<<< HEAD
+=======
+- [es6-features](https://codetower.github.io/es6-features/)
+>>>>>>> origin/master

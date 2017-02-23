@@ -1,4 +1,24 @@
+# angular-cli
+
+```
+$ npm install -g angular-cli
+$ ndenv rehash
+$ ng new angular-cli-sample
+$ cd angular-cli-sample
+$ ng serve
+```
+
+うまくいく件。。。
+
+
+# 以降全然うまくいかん
+
 ```sh
+$ npm install -g webpack
+$ npm install -g rimraf
+$ npm install -g webpack-dev-server
+
+$ ndenv rehash
 $ mkdir angular-sample
 $ cd angular-sample
 $ npm init -y
@@ -53,6 +73,14 @@ TypeScript+webpack+Angular公式設定系ガイド
 https://github.com/ovrmrw/angular2-5minquickstart-webpack
 
 # 話題
+
+## rimraf
+
+削除してくれるコマンド。
+
+```
+rimraf dist
+```
 
 ## TypeScriptの型解決について
 

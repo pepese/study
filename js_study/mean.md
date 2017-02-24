@@ -1,7 +1,158 @@
+
+# プロジェクト作成手順
+
+## フロントエンド
+
+### Angular CLIでプロジェクト作成
+
+```
+$ ng new mean2-sample --style=scss
+$ cd mean2-sample
+$ npm install ng2-bootstrap bootstrap jquery --save
+```
+
+### angular-cli.json 修正
+
+```javascript
+// 省略
+"styles": [
+  "../node_modules/bootstrap/dist/css/bootstrap.min.css", // 追加行
+  "styles.scss"
+],
+"scripts": [
+  "../node_modules/jquery/dist/jquery.min.js",           // 追加行
+  "../node_modules/bootstrap/dist/js/bootstrap.min.js"   // 追加行
+],
+// 省略
+```
+
+bootstrap、jqueryのスクリプト、スタイルシートを追加。
+
+### src/app/app.module.ts 修正
+
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap'; // 追加行
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    Ng2BootstrapModule // 追加行
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+[ng2-bootstrap](https://valor-software.com/ng2-bootstrap/#/)のモジュールを追加。
+
+## サーバサイド
+
+Angular CLIで作成したプロジェクトのサーバサイド、つまりExpressを追加する。  
+ソースディレクトリは ```app/``` 。  
+フロントエンドとは異なりトランスパイル不要。  
+フロントエンドトランスパイル後の ```dist``` を公開ディレクトリとする。
+
+### Expressの追加
+
+```sh
+npm install express@5.0.0-alpha.3 body-parser --save
+mkdir app // サーバサイドExpressアプリ用のソースディレクトリ作成
+touch app/app.js
+mkdir app/routes
+touch app/routes/index.js
+```
+
+### app/app.js
+
+```
+// Get dependencies
+const express = require('express');
+const path = require('path');
+const http = require('http');
+const bodyParser = require('body-parser');
+
+// Get our API routes
+const index = require('./routes/index');
+
+const app = express();
+
+// Parsers for POST data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Point static path to dist
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Set our api routes
+app.use('/api', index);
+
+// Catch all other routes and return the index file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = process.env.PORT || '3000';
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port, () => console.log(`API running on localhost:${port}`));
+```
+
+### app/routes/index.js
+
+```
+const express = require('express');
+const router = express.Router();
+
+/* GET api listing. */
+router.get('/', (req, res) => {
+  res.send('api works! /api accessed!');
+});
+
+module.exports = router;
+```
+
+
+## 起動
+
+```
+$ ng build // フロントエンドのビルド
+$ node app/app.js  // サーバサイドアプリ起動
+```
+
+
+
+
+
+
+
+# 以降メモ
+
 MEANスタックについて。  
 ただし、Angular2。
-
-https://github.com/datatypevoid/ng2-mean-webpack
+下の構成を目指して ```@angular/cli``` にExpressを足す方針。
 
 ```
 ng2-mean-webpack/

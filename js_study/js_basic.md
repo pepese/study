@@ -50,6 +50,8 @@ typeof function() {}; // => "function"
 
 # 関数
 
+## 通常の関数
+
 通常の関数定義は以下のように行う。
 
 ```js
@@ -64,7 +66,7 @@ var hoge = function hoge(){...};
 hoge();
 ```
 
-# 無名関数
+## 無名関数
 
 無名関数は、通常 ```var hoge = function hoge(){...};``` のように書くところを冗長な ```hoge``` を省略して以下のように書くことをいう。
 
@@ -78,7 +80,7 @@ var hoge = function (){...};
 var hoge = function (){...}();
 ```
 
-# 即時関数
+## 即時関数
 
 関数の定義と実行が同時になる関数。  
 構文は以下。
@@ -141,6 +143,17 @@ delete function(){}();
 ことになる。  
 メリットは、 ```var c``` とか書かない分、文字数削減となること。
 
+## Arrow Function
+
+```=>``` を使うことで匿名関数を定義できるArrow Functionがある。
+
+```js
+const 関数名 = () => {
+    // 関数を呼び出した時の処理
+    // ...
+    return 関数の返す値;
+};
+```
 
 # ブラウザオブジェクト
 
@@ -148,7 +161,4 @@ delete function(){}();
 
 - [参考](http://web-design-felica.hatenablog.com/entry/20160511/p1)
 - [公式](https://developer.mozilla.org/ja/docs/Web/API/Window)
-<<<<<<< HEAD
-=======
 - [es6-features](https://codetower.github.io/es6-features/)
->>>>>>> origin/master

@@ -3,8 +3,12 @@
 ES5（2011年策定）  
 ECMAScript 2015（ECMAScript 6）
 
+- [[WIP] JavaScriptの入門書](https://asciidwango.github.io/js-primer/)
 - [ES2015で始めるJavaScript入門](http://qiita.com/ABCanG1015/items/824681cb88676da4f9a8)
+- [JavaScriptオブジェクトの作成パターン ES6時代のベストプラクティス](https://getpocket.com/a/read/1437030710)
 - [JavaScript初級者のためのコーディングガイド](http://qiita.com/raccy/items/bf590d3c10c3f1a2846b)
+- [「JavaScript初級者のためのコーディングガイド」に補足を試みる](http://qiita.com/ms2sato/items/94ed459640a1d89cb4de?utm_source=Qiitaニュース&utm_campaign=383650bdcf-Qiita_newsletter_242_11_1_2017&utm_medium=email&utm_term=0_e44feaa081-383650bdcf-32789017)
+- [Javascriptを理解したい時にみるとはかどる記事まとめ](http://qiita.com/okmttdhr/items/3b35ebe6017fe4057ddc)
 
 過去のjsまとめは[これ](http://blog.pepese.com/entry/20130321/1363854485)。
 
@@ -18,6 +22,31 @@ NodeJSの対応状況は、[node.green](http://node.green)。
 |スコープ|ブロック|ブロック|関数|
 |再代入|不可能|可能|可能|
 |用途|定数|変数|使用しない|
+
+# データ型
+
+- プリミティブ型（基本型）
+  - 真偽値（Boolean）: trueまたはfalseのデータ型
+  - 数値（Number）: 42 や 3.14159 などの数値のデータ型
+  - 文字列（String）: "JavaScript" などの文字列のデータ型
+  - undefined: 値が未定義であることを意味するデータ型
+  - null: 値が存在しないnull値を意味するデータ型
+  - シンボル（Symbol）: ES2015から追加された一意で不変な値のデータ型
+- オブジェクト（複合型)
+  - プリミティブ型以外のデータ
+  - オブジェクト、配列、関数、正規表現、Dateなど
+
+```javascript
+typeof true;// => "boolean"
+typeof 42; // => "number"
+typeof "JavaScript"; // => "string"
+typeof Symbol("シンボル");// => "symbol"
+typeof undefined; // => "undefined"
+typeof null; // => "object"
+typeof ["配列"]; // => "object"
+typeof { "key": "value" }; // => "object"
+typeof function() {}; // => "function"
+```
 
 # 関数
 

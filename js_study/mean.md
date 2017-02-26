@@ -1,6 +1,5 @@
 Angular2でMEANスタックのアプリを作成してみる。
 
-
 # プロジェクト作成手順
 
 ## フロントエンド
@@ -84,6 +83,8 @@ mkdir app/repositories        // DAO/Repository用のディレクトリ作成
 touch app/repositories/.gitkeep
 mkdir app/views               // 画面用のディレクトリ作成
 touch app/views/.gitkeep
+mkdir app/config              // 設定ファイル用ディレクトリ作成
+touch app/config/config.json  // 環境差分ファイル作成
 ```
 
 ### app/app.js
@@ -94,6 +95,10 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+
+// Get environment
+const env = process.env.NODE_ENV || "development";
+const config = require(path.join(__dirname, 'config', 'config.json'))[env];
 
 // Get our API routes
 const api = require('./api/index');
@@ -118,7 +123,7 @@ app.get('*', (req, res) => {
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '3000';
+const port = process.env.PORT || config.port || '3000';
 app.set('port', port);
 
 /**
@@ -144,6 +149,22 @@ router.get('/', (req, res) => {
 });
 
 module.exports = router;
+```
+
+### app/config/config.json
+
+```
+{
+  "development": {
+    "port": "3000"
+  },
+  "test": {
+    "port": "3000"
+  },
+  "production": {
+    "port": "3000"
+  }
+}
 ```
 
 

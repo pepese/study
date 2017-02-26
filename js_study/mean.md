@@ -1,9 +1,13 @@
+Angular2でMEANスタックのアプリを作成してみる。
+
 
 # プロジェクト作成手順
 
 ## フロントエンド
 
 ### Angular CLIでプロジェクト作成
+
+SCSS、Bootstrap、jQueryベースで作成する。
 
 ```
 $ ng new mean2-sample --style=scss
@@ -59,19 +63,27 @@ export class AppModule { }
 
 ## サーバサイド
 
-Angular CLIで作成したプロジェクトのサーバサイド、つまりExpressを追加する。  
+Angular CLIで作成したプロジェクトにサーバサイド、つまりExpressを追加する。  
 ソースディレクトリは ```app/``` 。  
 フロントエンドとは異なりトランスパイル不要。  
-フロントエンドトランスパイル後の ```dist``` を公開ディレクトリとする。
+フロントエンドトランスパイル後の ```dist``` をExpress側で公開ディレクトリに設定する。
 
 ### Expressの追加
 
 ```sh
 npm install express@5.0.0-alpha.3 body-parser --save
-mkdir app // サーバサイドExpressアプリ用のソースディレクトリ作成
-touch app/app.js
-mkdir app/routes
-touch app/routes/index.js
+mkdir app                     // サーバサイドExpressアプリ用のソースディレクトリ作成
+touch app/app.js              // Expressアプリケーション起動ポイントの作成
+mkdir app/api                 // REST API用のコントローラディレクトリ作成
+touch app/api/index.js
+mkdir app/controllers         // VIEW用のコントローラディレクトリ作成
+touch app/controllers/.gitkeep
+mkdir app/models              // Mongoose（MongoDB）用のモデルディレクトリ作成
+touch app/models/.gitkeep
+mkdir app/repositories        // DAO/Repository用のディレクトリ作成
+touch app/repositories/.gitkeep
+mkdir app/views               // 画面用のディレクトリ作成
+touch app/views/.gitkeep
 ```
 
 ### app/app.js
@@ -84,7 +96,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 // Get our API routes
-const index = require('./routes/index');
+const api = require('./api/index');
 
 const app = express();
 
@@ -96,7 +108,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../dist')));
 
 // Set our api routes
-app.use('/api', index);
+app.use('/api', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
@@ -120,7 +132,7 @@ const server = http.createServer(app);
 server.listen(port, () => console.log(`API running on localhost:${port}`));
 ```
 
-### app/routes/index.js
+### app/api/index.js
 
 ```
 const express = require('express');
@@ -152,13 +164,14 @@ $ node app/app.js  // サーバサイドアプリ起動
 
 MEANスタックについて。  
 ただし、Angular2。
-下の構成を目指して ```@angular/cli``` にExpressを足す方針。
+下の構成を目指して ```@angular/cli``` にExpressを足す方針。  
+※[ここ](https://gist.github.com/mitsuruog/fc48397a8e80f051a145)の構成を取り込む！
 
 ```
 ng2-mean-webpack/
  │
  ├──app/                            * サーバサイド（Node.js、Express）
- │   ├──models/                     * model definitions for Mongoose
+ │   ├──models/                     * Mongoose（MongoDB）のモデル定義
  │   │   └──user.model.js           * a user model for use with PassportJS
  │   ├──routes/                     * store all modular REST API routes for Express here
  │   │   └──authentication          * an Express route for use with PassportJS

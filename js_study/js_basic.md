@@ -1,19 +1,4 @@
-# めも
-
-ES5（2011年策定）  
-ECMAScript 2015（ECMAScript 6）
-
-- [[WIP] JavaScriptの入門書](https://asciidwango.github.io/js-primer/)
-- [ES2015で始めるJavaScript入門](http://qiita.com/ABCanG1015/items/824681cb88676da4f9a8)
-- [JavaScriptオブジェクトの作成パターン ES6時代のベストプラクティス](https://getpocket.com/a/read/1437030710)
-- [JavaScript初級者のためのコーディングガイド](http://qiita.com/raccy/items/bf590d3c10c3f1a2846b)
-- [「JavaScript初級者のためのコーディングガイド」に補足を試みる](http://qiita.com/ms2sato/items/94ed459640a1d89cb4de?utm_source=Qiitaニュース&utm_campaign=383650bdcf-Qiita_newsletter_242_11_1_2017&utm_medium=email&utm_term=0_e44feaa081-383650bdcf-32789017)
-- [Javascriptを理解したい時にみるとはかどる記事まとめ](http://qiita.com/okmttdhr/items/3b35ebe6017fe4057ddc)
-
-過去のjsまとめは[これ](http://blog.pepese.com/entry/20130321/1363854485)。
-
-ES6のブラウザ対応状況は、[compat-table](http://kangax.github.io/compat-table/es6/)がわかりやすい。  
-NodeJSの対応状況は、[node.green](http://node.green)。
+JavaScriptについて軽くまとめる。
 
 # 変数宣言
 
@@ -36,6 +21,22 @@ NodeJSの対応状況は、[node.green](http://node.green)。
   - プリミティブ型以外のデータ
   - オブジェクト、配列、関数、正規表現、Dateなど
 
+型変換は ```String([1, 2, 3])``` のように行う。  
+また、数値の詳細な変換は以下。
+
+```javascript
+// "1"をパースして10進数として取り出す
+Number.parseInt("1", 10); // => 1;
+// 余計な文字はパース時に無視して取り出す
+Number.parseInt("42px", 10); // => 42
+Number.parseInt("10.0", 10); // => 10
+Number.parseFloat("1"); // => 1
+Number.parseInt("42.0px"); // => 42.0
+Number.parseFloat("10.0"); // => 10.0
+```
+
+型の確認は以下。
+
 ```javascript
 typeof true;// => "boolean"
 typeof 42; // => "number"
@@ -47,6 +48,103 @@ typeof ["配列"]; // => "object"
 typeof { "key": "value" }; // => "object"
 typeof function() {}; // => "function"
 ```
+
+# ループ
+
+## Array#forEach
+
+```javascript
+var array = [1, 2, 3, 4, 5];
+array.forEach((currentValue, index, array) => {
+    // 実行する文
+});
+
+[1, 2, 3].forEach(currentValue => {
+    console.log(num);
+});
+// 1
+// 2
+// 3
+// と順番に出力される
+```
+
+## Array#some
+
+配列をループし、検査を１つでもパスする要素があれば ```ture``` を返却する。
+
+```javascript
+var isPassed = array.some((currentValue, index, array) => {
+  // 検査を行う処理を記載する。
+  // 検査をパスするならtrue、そうでないならfalseを返す
+});
+```
+
+## Array#filter
+
+配列を全ループし、検査をパスする要素のみ返却する。
+
+```javascript
+var filterdArray = array.filter((currentValue, index, array) => {
+  // 検査を行う処理を記載する。
+  // 検査をパスするならtrue、そうでないならfalseを返す
+});
+```
+
+## for...in
+
+オブジェクトのループに使用する。  
+key-valueの **key** が取り出される。
+
+```javascript
+for (variable in object)
+    実行する文;
+```
+
+## for...of [ES6]
+
+オブジェクトのループに使用する。  
+key-valueの **value** が取り出される。
+
+```javascript
+for (variable of iterable)
+    実行する文;
+```
+
+# オブジェクト
+
+所謂 **JSON** 。  
+**Symbol** を利用する場合は以下。
+
+```javascript
+var object = {
+    key1: "value1"
+};
+// ドット記法で参照
+console.log(object.key1); // => "value"
+// ブラケット記法で参照
+console.log(object["key1"]); // => "value"
+// `key2`プロパティを追加し値を代入
+object.key2 = "value2";
+console.log(object.key); // => "value2"
+```
+
+**Symbol** を利用しない場合は以下。
+
+```javascript
+var object = {
+    "ja": "日本語",
+    "en": "英語"
+};
+var myLang = "ja";
+console.log(object[myLang]); // => "日本語"
+var key = "key-string";
+// `key`の評価結果 "key-string" をプロパティ名に利用
+object[key] = "value of key";
+// 取り出すときも同じく`key`変数を利用
+console.log(object[key]); // => "value of key"
+```
+
+プロパティにアクセスしても存在しない場合は ```undefined``` が返却される。
 
 # 関数
 
@@ -143,7 +241,7 @@ delete function(){}();
 ことになる。  
 メリットは、 ```var c``` とか書かない分、文字数削減となること。
 
-## Arrow Function
+## Arrow Function [ES6]
 
 ```=>``` を使うことで匿名関数を定義できるArrow Functionがある。
 
@@ -162,3 +260,20 @@ const 関数名 = () => {
 - [参考](http://web-design-felica.hatenablog.com/entry/20160511/p1)
 - [公式](https://developer.mozilla.org/ja/docs/Web/API/Window)
 - [es6-features](https://codetower.github.io/es6-features/)
+
+# 参考
+
+ES5（2011年策定）  
+ECMAScript 2015（ECMAScript 6）
+
+- [[WIP] JavaScriptの入門書](https://asciidwango.github.io/js-primer/)
+- [ES2015で始めるJavaScript入門](http://qiita.com/ABCanG1015/items/824681cb88676da4f9a8)
+- [JavaScriptオブジェクトの作成パターン ES6時代のベストプラクティス](https://getpocket.com/a/read/1437030710)
+- [JavaScript初級者のためのコーディングガイド](http://qiita.com/raccy/items/bf590d3c10c3f1a2846b)
+- [「JavaScript初級者のためのコーディングガイド」に補足を試みる](http://qiita.com/ms2sato/items/94ed459640a1d89cb4de?utm_source=Qiitaニュース&utm_campaign=383650bdcf-Qiita_newsletter_242_11_1_2017&utm_medium=email&utm_term=0_e44feaa081-383650bdcf-32789017)
+- [Javascriptを理解したい時にみるとはかどる記事まとめ](http://qiita.com/okmttdhr/items/3b35ebe6017fe4057ddc)
+
+過去のjsまとめは[これ](http://blog.pepese.com/entry/20130321/1363854485)。
+
+ES6のブラウザ対応状況は、[compat-table](http://kangax.github.io/compat-table/es6/)がわかりやすい。  
+NodeJSの対応状況は、[node.green](http://node.green)。

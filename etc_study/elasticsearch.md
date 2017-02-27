@@ -30,7 +30,7 @@ $ elasticsearch-plugin install analysis-kuromoji
 
 # 概要
 
-ElasticSearchには**Indices**、**Types**、**Documents**、**Fields**があり、RDBと比較するとそれぞれ以下のような対応関係になる。
+ElasticSearchには**Indices**、**Types**、**Documents**、**Fields** があり、RDBと比較するとそれぞれ以下のような対応関係になる。
 
 |RDB|ElasticSearch|
 |:---|:---|
@@ -52,7 +52,7 @@ IndexはN個のShardを持つ。デフォルトで1つのIndexは5つのShardに
 
 # アクセス方法
 
-ElasticSearchはRDBのようにドライバを使用してアクセスするのではなく、**REST API**でアクセスする。  
+ElasticSearchはRDBのようにドライバを使用してアクセスするのではなく、**REST API** でアクセスする。  
 以下のようなURI構造になっている。
 
 ```bash
@@ -60,9 +60,19 @@ ElasticSearchはRDBのようにドライバを使用してアクセスするの�
 ```
 
 上記のようなURI構造に対してGET、POST、PUT、DELETEメソッドでアクセスし、データのCRUDを行う。  
-```{id}```は一意である必要があり、POSTの際、指定してアクセスすればそれが、指定せずアクセスすれば自動生成される。  
-また、ElasticSearchでは**楽観ロック**（更新開始時に排他処理は行なわず、更新完了時に他からの更新がないか確認。他からの更新があったらロールバックしてエラーを返却。）が採用されている。  
+```{id}``` は一意である必要があり、POSTの際、指定してアクセスすればそれが、指定せずアクセスすれば自動生成される。  
+また、ElasticSearchでは **楽観ロック** （更新開始時に排他処理は行なわず、更新完了時に他からの更新がないか確認。他からの更新があったらロールバックしてエラーを返却。）が採用されている。  
 
 CRUDのAPIは[Single/Multi-document APIs](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html)など十分用意されている。  
 Index・Type横断など含め**複数種類のデータを横断**で検索をかける場合は[Search APIs](https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html)を用いる。  
 その他にも様々なAPIがある。詳細は[ドキュメント](https://www.elastic.co/guide/index.html)を参照。
+
+# 参考
+
+- セミナー
+  - https://info.elastic.co/japan-technical-workshop.html
+- ハンズオン
+  - http://kakakakakku.hatenablog.com/entry/2015/09/09/231956
+  - https://github.com/Kakakakakku/elasticsearch-hands-on
+- 記事
+  - http://dev.classmethod.jp/server-side/elasticsearch-getting-started-08/

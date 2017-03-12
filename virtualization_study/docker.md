@@ -1,10 +1,12 @@
+dockerをちょっと整理してみる。
+
 ```sh
 $ docker pull centos:6.8
 $ docker run -it centos:6.8 /bin/bash
 (detach)
 ```
 
-# USAGE
+# 使い方・概要
 
 ```sh
 $ docker [OPTIONS] COMMAND [arg...]
@@ -48,7 +50,7 @@ $ docker [OPTIONS] COMMAND [arg...]
 |service   |Manage Docker services|
 |start     |Start one or more stopped containers|
 |stats     |Display a live stream of container(s) resource usage statistics|
-|stop      |Stop one or more running containers|
+|stop      |Dockerコンテナを停止する|
 |swarm     |Manage Docker Swarm|
 |tag       |Tag an image into a repository|
 |top       |Display the running processes of a container|
@@ -58,12 +60,16 @@ $ docker [OPTIONS] COMMAND [arg...]
 |volume    |Manage Docker volumes|
 |wait      |Block until a container stops, then print its exit code|
 
+上記のようにいろいろコマンドはあるが、最低限使うものだけ後述する。  
+なお、コマンド・オプションがわからないのときは ```docker COMMAND --help``` でヘルプが見れる。
 
 ## docker run
 
 ```sh
 $ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 ```
+
+以下、代表的なオプションメモ。
 
 |OPTIONS|description|
 |:---|:---|
@@ -78,29 +84,58 @@ $ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 |-v, --volume value|Bind mount a volume (default [])|
 |-w, --workdir string|Working directory inside the container|
 
-下記で、CentOSのイメージをインタラクティブモードで起動させてbashコマンドを起動（CentOSにログインした状態に同じ）。
+下記で、CentOSのイメージをインタラクティブモードで起動させてbashコマンドを起動（CentOSにログインした状態に同じ）。  
+```PID=1``` の ```/bin/bash``` プロセスで接続しているので ```exit``` すると ```/bin/bash``` プロセスが終了し、コンテナも停止する。
 
 ```sh
 $ sudo docker run -i -t centos /bin/bash
 ```
 
-下記のような起動方法の意味合いはまだ不明。
+下記で、Swaggerをバックグラウンドで起動する。（ログインした状態にならない）
 
 ```sh
 $ docker run -d -p 8001:8080 swaggerapi/swagger-editor
 ```
 
-## 起動中のDockerコンテナにbash接続する方法
+Swaggerのコンテナを起動する例にしたのは気まぐれ。
+
+### 起動中のDockerコンテナにbash接続する方法
 
 1. docker attach CONTAINER
-  - Dockerコンテナで既に起動している```/bin/bash```プロセス（PID=1）に接続する
+  - Dockerコンテナで既に起動している ```/bin/bash``` プロセス（PID=1）に接続する
   - exitするとDockerコンテナも停止する
   - detachすればDockerコンテナは停止しない
 1. docker exec -it CONTAINER /bin/bash
-  - Dockerコンテナ内に新規で```/bin/bash```プロセスを起動し、接続する
+  - Dockerコンテナ内に新規で ```/bin/bash``` プロセスを起動し、接続する
   - exitしてもDockerコンテナは停止しない
 
 **detach** の方法は ```Ctrl + P -> Ctrl + Q``` （ctrlを押しながらP -> Qと押す）。
+
+## docker stop
+
+Dockerコンテナを停止する。
+
+```sh
+$ docker stop CONTAINER
+```
+
+```CONTAINER``` の部分は **CONTAINER ID** だが、起動時に ```--name``` オプションで名前を指定しておけばそれでもよい。
+
+## docker ps
+
+Dockerのプロセス一覧を見ることができる。  
+など、Dockerコンテナは停止しても、停止した状態でイメージが残る。  
+停止したコンテナも含めて見たい場合は以下。
+
+```sh
+$ docker ps -a
+```
+
+コンテナの削除は以下。
+
+```sh
+$ docker rm CONTAINER
+```
 
 ## ホストOS、Dockerコンテナ間でのファイルのやり取り
 
@@ -115,13 +150,15 @@ $ docker cp <コンテナID>:/etc/my.cnf my.cnf
 $ docker cp my.cnf <コンテナID>:/etc/my.cnf
 ```
 
-## Dockerイメージの作成
+## Docker commit
+
+Dockerのイメージを作成する。
 
 ```sh
 $ docker commit <コンテナID> <イメージ名>
 ```
 
-## Dockerイメージ・コンテナの受け渡し
+### Dockerイメージ・コンテナの受け渡し
 
 ```save``` か ```export``` コマンドでtarファイルを作成できる。
 
@@ -187,6 +224,17 @@ Dockerではコンテナ外にログを出力することができる。
 # イメージ置き場
 
 [Dockerイメージ置き場の件](https://speakerdeck.com/ozzozz/dockerimezizhi-kichang-falsejian)
+
+# 各種ミドルウェア搭載済みDockerコンテナの起動
+
+## Redis
+
+```sh
+$ docker run --name redis -d -p 6379:6379 redis redis-server --appendonly yes
+```
+
+なお、 **Docker for Mac** などを使用してVM上にDockerコンテナを起動している場合は、localhost(127.0.0.1)で接続できないことに注意。  
+```docker-machine``` を使用している場合は ```docker-machine ip default``` （defaultはVM名）でIPを確認して接続する。
 
 # 参考
 

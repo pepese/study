@@ -99,3 +99,5 @@ export DOCKER_MACHINE_NAME="default"
 ```bash
 $ docker run hello-world
 ```
+
+なお、Docker VM上に起動したDockerコンテナに接続する場合は、 ```docker-machine IP VM名``` でIPを確認してから接続する。

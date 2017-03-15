@@ -164,14 +164,19 @@ Angularのアーキテクチャは以下から構成される。
 
 ## モジュール（@NgModule）
 
-Angularアプリケーションは少なくとも１つ **ルートモジュール** を持ち、```AppModule``` と命名する。  
-通常のアプリケーションの場合、ルートモジュールは１つだが、巨大なアプリケーションの場合複数持つこともある。
+Angularのアプリケーションはモジュール単位で機能を管理する。  
+モジュールは後述の **コンポーネント** を包含する。
 
-モジュールは ```@NgModule``` を用いて以下のように作成する。
+Angularアプリケーションは少なくとも１つ **ルートモジュール** を持ち、```AppModule``` と命名する。  
+ルートモジュールは、 ```src/main.ts``` からロードされる。  
+通常のアプリケーションの場合、ルートモジュールは１つだが、巨大なアプリケーションの場合、複数のルートモジュールを持つこともある。
+
+モジュールは以下のように作成する。
 
 ```typescript
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 @NgModule({
   imports:      [ BrowserModule ],
   providers:    [ Logger ],
@@ -182,7 +187,9 @@ import { BrowserModule } from '@angular/platform-browser';
 export class AppModule { }
 ```
 
-プロパティは以下の通り。
+```AppModule``` クラスに ```@NgModule``` アノテーションを付与した形になっている。  
+アノテーションにAngularに則した設定を行い、クラスには通常通り任意のフィールド、メソッドを定義する。  
+アノテーションのプロパティは以下の通り。
 
 - ```imports```
   - other modules whose exported classes are needed by component templates declared in this module.

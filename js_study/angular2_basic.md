@@ -76,7 +76,7 @@ $ ng serve
     │   └── environment.ts
     ├── favicon.ico
     ├── index.html
-    ├── main.ts
+    ├── main.ts                       * ルートモジュールのロード（メイン）
     ├── polyfills.ts
     ├── styles.css
     ├── test.ts
@@ -115,18 +115,19 @@ $ ng serve
 
 ### blueprints の種類
 
-|blueprints|description|
-|:---|:---|
-|component|a|
-|directive|a|
-|pipe     |a|
-|service  |a|
-|class    |a|
-|interface|a|
-|enum     |a|
-|module   |a|
+|blueprints|command|description|
+|:---|:---|:---|
+|component| ```ng generate component sample``` | コンポーネント（ ```sample.component.ts``` ）を作成する。|
+|directive|a|a|
+|pipe     |a|a|
+|service  | ```ng generate service sample``` | コンポーネント（ ```sample.service.ts``` ）を作成する。|
+|class    |a|a|
+|interface|a|a|
+|enum     |a|a|
+|module   |a|a|
 
-```ng generate component my-new-component``` みたいな感じで使える。
+```ng generate component my-new-component``` みたいな感じで使える。  
+ディレクトリを切りたい場合は ```/``` を加えて、 ```ng generate service sample/sample-service``` のようにする。
 
 ## Angular CLI のバージョンアップ方法
 
@@ -152,16 +153,16 @@ Angularのアーキテクチャは以下から構成される。
 
 <img src="https://angular.io/resources/images/devguide/architecture/overview2.png" />
 
-- モジュール（module / NgModule）
-- Components
-- Templates
-- Metadata
-- Data binding
-- Directives
-- Services
-- Dependency injection
+- モジュール（@NgModule）
+- コンポーネント（@Components）
+- テンプレート（Templates）
+- メタデータ（Metadata）
+- データバインディング（Data binding）
+- ディレクテイブ（Directives）
+- サービス（Services）
+- DI（Dependency injection）
 
-## モジュール（module / NgModule）
+## モジュール（@NgModule）
 
 Angularアプリケーションは少なくとも１つ **ルートモジュール** を持ち、```AppModule``` と命名する。  
 通常のアプリケーションの場合、ルートモジュールは１つだが、巨大なアプリケーションの場合複数持つこともある。
@@ -199,7 +200,7 @@ export class AppModule { }
   - the main application view, called the root component, that hosts all other app views. Only the root module should set this bootstrap property.
   - **ルートコンポーネント** を定義する。ルートコンポーネントはアプリケーションのメインビュー。 **ルートモジュールにだけ** ```bootstarp``` プロパティを設定する。
 
-以下が **ルートモジュール** 。
+以下が **ルートモジュール** を指定する方法（ ```main.ts``` ）。
 
 ```typescritp
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -208,9 +209,9 @@ import { AppModule } from './app/app.module';
 platformBrowserDynamic().bootstrapModule(AppModule);
 ```
 
-また、以下のようにライブラリからモジュールをロードすることもできる。
+また、モジュール内では以下のようにライブラリから他のモジュールをロードすることもできる。
 
-```typescrpt
+```typescript
 import { Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 ```
@@ -223,11 +224,20 @@ imports:      [ BrowserModule ],
 
 ## コンポーネント
 
-コンポーネントはビューの役割を担う。
+コンポーネントはビューの役割を担う。  
+コンポーネントクラス内で定義したフィールド変数やメソッドは、テンプレートで直接使用できる。
 
 ## テンプレート
 
-テンプレートはコンポーネントのビューとして使われるHTML。
+テンプレートはコンポーネントのビューとして使われるHTML。  
+Angularの要素（ ```*ngFor``` など）を使用できる。
+
+- コンポーネントフィールドへのアクセス
+  - ```*ngFor``` ： コレクションフィールドの値にアクセス
+   - ```*ngFor="let hero of heroes"``` ： コレクションheroesの各要素をheroへ代入
+- コンポーネントのメソッド呼び出し
+  - ```(click)="onClickMe()"``` ： クリック時に ```onClickMe()``` メソッドを呼び出す
+  - ```(keyup)="onKey($event)"``` ： キーアップ時にイベントを引数に ```onKey()``` メソッドを呼び出す   
 
 ## メタデータ
 
@@ -267,23 +277,45 @@ DOMとコンポーネント間のデータ授受を行う機能。
 
 <img src="https://angular.io/resources/images/devguide/architecture/databinding.png" />
 
-- interpolation
+- 単方向バインド（interpolation）
   - ```<li>{{hero.name}}</li>```
   - コンポーネントの ```hero.name``` プロパティの値を ```<li>``` 表示する
-- property binding
+- プロパティバインド（property binding）
   - ```<hero-detail [hero]="selectedHero"></hero-detail>```
   - 親コンポーネントの ```selectedHero``` の値を、子コンポーネントの ```hero``` へ渡している
-- event binding
+- イベントバインド（event binding）
   - ```<li (click)="selectHero(hero)"></li>```
   - ユーザのクリックにより ```selectHero``` が呼び出される。
-- Two-way data binding
+- 双方向バインド（Two-way data binding）
   - ```<input [(ngModel)]="hero.name">```
   - ```ngModel``` を用いてproperty bindingとevent bindingを両方同時に実現する。
   - In two-way binding, a data property value flows to the input box from the component as with property binding. The user's changes also flow back to the component, resetting the property to the latest value, as with event binding.
 
+```ngModel``` のようにHTMLタグの属性として記述できるAngularの機能を **ディレクティブ** という。
+
+### イベント
+
+```html
+<button (click)="onClickButton()">ボタン1</button>
+<button (click)="onClickButtonWithEvent($event)">ボタン2</button>
+```
+
+```(click)``` のように、イベント名をカッコで囲んだ属性に、イベントを処理するメソッドを記述する。  
+引数なしの記述と、イベントオブジェクト ```$event``` を指定する記述ができる。  
+コンポーネントクラス内では以下のようにメソッド定義する。
+
+```typescript
+onClickButtonWithEvent(event:any) {
+   // targetプロパティでイベントを発生させたオブジェクトを取得
+   var button = event.target;
+   // ボタンのラベルをtextContentプロパティから取得して表示
+   alert("ボタン「" + button.textContent + "」が押下されました");
+ }
+```
+
 ## ディレクティブ
 
-```@Directive```
+```@Directive``` 。  
 動的にテンプレート（というかDOM？）を作る機能。
 
 ```
@@ -322,6 +354,47 @@ export class HeroService {
 }
 ```
 
+### 作成手順
+
+```sh
+$ ng generate service sample/sample
+installing service
+  create src/app/sample/sample.service.spec.ts
+  create src/app/sample/sample.service.ts
+  WARNING Service is generated but not provided, it must be provided to be used
+```
+
+上記で作成した ```src/app/sample/sample.service.ts``` をロードするには、使用するモジュールとコンポーネントにロードする。
+
+```typescript
+import { SampleService } from './sample/sample.service' // インポート
+...
+@NgModule({
+  ...
+  providers: [SampleService], // providers に追加
+  ...
+})
+export class AppModule { }
+```
+
+```typescript
+...
+import { SampleService } from './sample/sample.service' // インポート
+
+@Component({
+  ...
+})
+export class AppComponent {
+  title: string;
+
+  constructor(
+    sampleService: SampleService // コンストラクタに設定
+  ){
+    this.title = sampleService.getTitle();
+  }
+}
+```
+
 ## インジェクタ
 
 サービスをコンポーネントのコンストラクタ経由でインジェクトする機能。  
@@ -334,6 +407,30 @@ providers: [
   Logger
 ],
 ```
+
+```@Injectable``` アノテーションがついたサービスクラスは多段Injectすることが可能になる。  
+一段Injectはアノテーションが無しでもOK。
+
+## フォームとバリデータ
+
+http://codezine.jp/article/detail/9596?p=4
+
+# APIリファレンス
+
+APIリファレンスは[ここ](https://angular.io/docs/ts/latest/api/)。  
+クラスの前に記号がついており、それぞれ以下の意味。
+
+|記号|意味|
+|:---|:---|
+|D|Directive。ディレクティブ。|
+|P|Pipe。|
+|@|Decorator。|
+|C|Class。|
+|I|Interface。|
+|F|Function。|
+|E|Enum。|
+|T|Type Alias。|
+|K|Const。|
 
 
 # その他話題、メモ

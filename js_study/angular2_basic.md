@@ -165,7 +165,7 @@ Angularのアーキテクチャは以下から構成される。
 ## モジュール（@NgModule）
 
 Angularのアプリケーションはモジュール単位で機能を管理する。  
-モジュールは後述の **コンポーネント** を包含する。
+モジュールは後述の **コンポーネント** や **テンプレート** を包含する。
 
 Angularアプリケーションは少なくとも１つ **ルートモジュール** を持ち、```AppModule``` と命名する。  
 ルートモジュールは、 ```src/main.ts``` からロードされる。  
@@ -189,11 +189,11 @@ export class AppModule { }
 
 ```AppModule``` クラスに ```@NgModule``` アノテーションを付与した形になっている。  
 アノテーションにAngularに則した設定を行い、クラスには通常通り任意のフィールド、メソッドを定義する。  
-アノテーションのプロパティは以下の通り。
+アノテーションのプロパティは以下の通り。ちなみにアノテーションに設定するプロパティを **メタデータ** という。
 
 - ```imports```
-  - other modules whose exported classes are needed by component templates declared in this module.
-  - このモジュール内で定義されているコンポーネントやテンプレートが他のモジュールのクラスを必要とする場合にインポートする。
+  - このモジュールに他のモジュールを取り込み、このモジュール内で定義されているコンポーネントやテンプレートが他のモジュールのクラスを使用できるようになる。
+  - 他のモジュールの ```providers``` ・ ```exports``` に定義されたものを使用できるようになる。
 - ```providers```
   - creators of services that this module contributes to the global collection of services; they become accessible in all parts of the app.
   - このモジュールおよび関係するコンポーネント・サービスへインジェクトするためのサービスを定義・インスタンス化する。
@@ -203,11 +203,12 @@ export class AppModule { }
 - ```exports```
   - the subset of declarations that should be visible and usable in the component templates of other modules.
   - 他のモジュールのコンポーネントやテンプレードで使用可能となるサブセットの定義。
+  - このモジュール内のクラスを他のモジュールから使用可能にする。 ```imports``` の逆。
 - ```bootstrap```
   - the main application view, called the root component, that hosts all other app views. Only the root module should set this bootstrap property.
   - **ルートコンポーネント** を定義する。ルートコンポーネントはアプリケーションのメインビュー。 **ルートモジュールにだけ** ```bootstarp``` プロパティを設定する。
 
-以下が **ルートモジュール** を指定する方法（ ```main.ts``` ）。
+以下が **ルートモジュール** を指定する方法（ ```src/main.ts``` ）。
 
 ```typescritp
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -223,7 +224,7 @@ import { Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 ```
 
-ロードしたライブラリモジュールは、 ```@NgModule``` の ```imports``` プロパティで以下のように使える。
+ロードしたライブラリモジュールは、 ```@NgModule``` の ```imports``` プロパティに指定することにより使用できるようになる。
 
 ```typescript
 imports:      [ BrowserModule ],
@@ -234,21 +235,37 @@ imports:      [ BrowserModule ],
 コンポーネントはビューの役割を担う。  
 コンポーネントクラス内で定義したフィールド変数やメソッドは、テンプレートで直接使用できる。
 
+```typescript
+@Component({
+  moduleId: module.id,
+  selector:    'hero-list',
+  templateUrl: './hero-list.component.html',
+  providers:  [ HeroService ]
+})
+export class HeroListComponent implements OnInit {
+/* . . . */
+}
+```
+
 ## テンプレート
 
 テンプレートはコンポーネントのビューとして使われるHTML。  
-Angularの要素（ ```*ngFor``` など）を使用できる。
+コンポーネントクラスの ```@Component``` アノテーションのメタデータ直接記載（ ```template``` ）することも、別ファイルとして作成して読み込む（ ```templateUrl``` ）ことも可能。  
+テンプレート内では、HTMLの属性として **ディレクティブ** （ ```*ngFor``` など）を使用することができる。
 
 - コンポーネントフィールドへのアクセス
   - ```*ngFor``` ： コレクションフィールドの値にアクセス
    - ```*ngFor="let hero of heroes"``` ： コレクションheroesの各要素をheroへ代入
 - コンポーネントのメソッド呼び出し
   - ```(click)="onClickMe()"``` ： クリック時に ```onClickMe()``` メソッドを呼び出す
-  - ```(keyup)="onKey($event)"``` ： キーアップ時にイベントを引数に ```onKey()``` メソッドを呼び出す   
+  - ```(keyup)="onKey($event)"``` ： キーアップ時にイベントを引数に ```onKey()``` メソッドを呼び出す
+
+また、テンプレートにはスタイルシート（CSS、Sassなど）を指定することができ、```@Component``` アノテーションのメタデータ（ ```styles``` 、 ```styleUrls``` ）で指定することができる。
 
 ## メタデータ
 
-メタデータはAngularにクラスがどのように挙動するか知らせる役割。  
+メタデータはアノテーションに設定するプロパティ。  
+Angularにクラスがどのように挙動するか知らせる役割。  
 ```@Component``` 内に以下のように設定できる。
 
 ```typescript
@@ -263,18 +280,19 @@ export class HeroListComponent implements OnInit {
 }
 ```
 
-プロパティは以下。
-
 - moduleId
   - sets the source of the base address (module.id) for module-relative URLs such as the templateUrl.
 - selector
   - CSS selector that tells Angular to create and insert an instance of this component where it finds a <hero-list> tag in parent HTML. For example, if an app's HTML contains <hero-list></hero-list>, then Angular inserts an instance of the HeroListComponent view between those tags.
 - templateUrl
-  - module-relative address of this component's HTML template, shown above.
+  - このコンポーネントで使用するHTMLの **テンプレート** のパスを指定する。
 - providers
-  - array of dependency injection providers for services that the component requires. This is one way to tell Angular that the component's constructor requires a HeroService so it can get the list of heroes to display.
+  - このコンポーネントがDI経由で使用するサービスクラスを指定する。
+  - コンポーネントクラスの ```constructor``` の引数でも指定する必要がある。
 
-```@Injectable``` 、 ```@Input``` 、 ```@Output``` などにもメタデータを設定できる。
+```@Injectable``` 、 ```@Input``` 、 ```@Output``` などのアノテーションにもメタデータを設定できる。  
+APIリファレンスにて使用できるメタデータを確認できる。  
+例えば ```@Component``` のメタデータは[ここ](https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html)で確認できる。
 
 
 ## データバインディング
@@ -431,7 +449,7 @@ APIリファレンスは[ここ](https://angular.io/docs/ts/latest/api/)。
 |:---|:---|
 |D|Directive。ディレクティブ。|
 |P|Pipe。|
-|@|Decorator。|
+|@|Decorator。所謂アノテーション。|
 |C|Class。|
 |I|Interface。|
 |F|Function。|

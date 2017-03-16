@@ -1,14 +1,11 @@
 フロントエンドMVCフレームワーク **Angular** （所謂Angular2）を触ってみた。  
-下記の記事のように ```npm install``` しながらプロジェクト作ったらうまくいかなかったので [Angular CLI](https://github.com/angular/angular-cli) を使う。
-
-[http://blog.pepese.com/entry/2017/02/16/141653:embed:cite]
-
-なお、以下の記事で **ndenv** が入ってるテイで書く。
+ここでは [Angular CLI](https://github.com/angular/angular-cli) を使う。  
+なお、 **ndenv** が入ってるテイで書く。導入は下記記事参照。
 
 [http://blog.pepese.com/entry/2016/11/23/174208:embed:cite]
 
 
-# Angular CLI の使い方
+# Angular CLI
 
 ## インストール
 
@@ -64,7 +61,7 @@ $ ng serve
 ├── protractor.conf.js               * e2eテストの設定ファイル
 ├── tslint.json                      * TypeScriptのLinter設定ファイル
 └── src                              * ソースファイルディレクトリ
-    ├── app
+    ├── app                          * アプリケーションコードディレクトリ
     │   ├── app.component.css
     │   ├── app.component.html
     │   ├── app.component.spec.ts
@@ -75,7 +72,7 @@ $ ng serve
     │   ├── environment.prod.ts
     │   └── environment.ts
     ├── favicon.ico
-    ├── index.html
+    ├── index.html                    * トップ画面、ルートコンポーネントを記載
     ├── main.ts                       * ルートモジュールのロード（メイン）
     ├── polyfills.ts
     ├── styles.css
@@ -84,7 +81,8 @@ $ ng serve
 ```
 
 ```.ditorconfig``` は[EditorConfig](http://editorconfig.org)というプロジェクトの設定ファイルで、エディタへプラグインなどを入れることにより様々なエディタの設定をプロジェクト単位で可能にする。  
-テストは **Jasmine** （テスティングフレームワーク）と **Karma** （テストランナー）の組み合わせで実行される。
+テストは **Jasmine** （テスティングフレームワーク）と **Karma** （テストランナー）の組み合わせで実行される。  
+e2e（エンドツーエンド）テストは **protractor** 。
 
 ## 主要なコマンド
 
@@ -115,52 +113,75 @@ $ ng serve
 
 ### blueprints の種類
 
-|blueprints|command|description|
-|:---|:---|:---|
-|component| ```ng generate component sample``` | コンポーネント（ ```sample.component.ts``` ）を作成する。|
-|directive|a|a|
-|pipe     |a|a|
-|service  | ```ng generate service sample``` | コンポーネント（ ```sample.service.ts``` ）を作成する。|
-|class    |a|a|
-|interface|a|a|
-|enum     |a|a|
-|module   |a|a|
+- module
+  - ```ng generate module sample```
+  - モジュール（ ```sample/sample.module.ts``` ）が作成される。
+  - 自動で指定したモジュール名でディレクトリが切られることに注意
+- component
+  - ```ng generate component sample```
+  - コンポーネント（以下）を作成し、 ```app.module.ts``` に自動登録（importおよびメタデータ ```declarations``` への追加）される。
+    - ```sample.component.ts``` 、 ```sample.component.spec.ts``` 、 ```sample.component.html``` 、 ```sample.component.scss```
+  - なお、既に存在するモジュール名で作成すると、そのモジュール名のディレクトリ内に作成される。
+- directive
+  - ```ng generate directive sample```
+  - ディレクティブ（以下）を作成し、 ```app.module.ts``` に自動登録（importおよびメタデータ ```declarations``` への追加）される。
+    - ```sample.directive.ts``` 、 ```sample.directive.spec.ts```
+- pipe
+  - ```ng generate pipe sample```
+  - パイプ（以下）を作成し、 ```app.module.ts``` に自動登録（importおよびメタデータ ```declarations``` への追加）される。
+    - ```sample.pipe.ts``` 、 ```sample.pipe.spec.ts```
+- service
+  - ```ng generate service sample```
+  - サービス（以下）を作成する。
+    - ```sample.service.ts``` 、 ```sample.service.spec.ts```
+- class
+  - ```ng generate class sample```
+  - 普通のクラス（ ```sample.ts``` ）が作成される。
+- interface
+  - ```ng generate interface sample```
+  - 普通のインターフェース（ ```sample.ts``` ）が作成される。
+- enum
+  - ```ng generate enum sample```
+  - 普通の列挙型（ ```sample.enum.ts``` ）が作成される。
 
-```ng generate component my-new-component``` みたいな感じで使える。  
 ディレクトリを切りたい場合は ```/``` を加えて、 ```ng generate service sample/sample-service``` のようにする。
+
 
 ## Angular CLI のバージョンアップ方法
 
 グローバルでは以下。
 
 ```sh
-npm uninstall -g @angular/cli
-npm cache clean
-npm install -g @angular/cli@latest
+$ npm uninstall -g @angular/cli
+$ npm cache clean
+$ npm install -g @angular/cli@latest
+$ ndenv rehash
 ```
 
 ローカルプロジェクトでは以下。
 
 ```sh
-rm -rf node_modules dist # use rmdir on Windows
-npm install --save-dev @angular/cli@latest
-npm install
+$ rm -rf node_modules dist # use rmdir on Windows
+$ npm install --save-dev @angular/cli@latest
+$ npm install
 ```
 
-# Angularのアーキテクチャ
+# Angularの基本
 
-Angularのアーキテクチャは以下から構成される。
-
-<img src="https://angular.io/resources/images/devguide/architecture/overview2.png" />
+Angularのアーキテクチャは以下の要素から構成される。
 
 - モジュール（@NgModule）
 - コンポーネント（@Components）
 - テンプレート（Templates）
 - メタデータ（Metadata）
-- データバインディング（Data binding）
-- ディレクテイブ（Directives）
-- サービス（Services）
-- DI（Dependency injection）
+- データバインディング（Data Binding）
+- ディレクテイブ（@Directive）
+- パイプ（@Pipe）
+- サービス（Services）・DI（Dependency injection / @Injectable）
+- フォームとバリデータ
+- Angularライブラリ
+
+上記の各々について後述する。
 
 ## モジュール（@NgModule）
 
@@ -187,26 +208,23 @@ import { BrowserModule } from '@angular/platform-browser';
 export class AppModule { }
 ```
 
-```AppModule``` クラスに ```@NgModule``` アノテーションを付与した形になっている。  
-アノテーションにAngularに則した設定を行い、クラスには通常通り任意のフィールド、メソッドを定義する。  
-アノテーションのプロパティは以下の通り。ちなみにアノテーションに設定するプロパティを **メタデータ** という。
+```AppModule``` クラスに ```@NgModule``` **デコレータ** （Javaでいうアノテーション）を付与した形になっている。  
+デコレータにAngularに則した設定を行い、クラスには何も書かない（たぶん）。  
+```@NgModule``` の代表的なプロパティは以下の通り。ちなみにデコレータに設定するプロパティを **メタデータ** という。
 
 - ```imports```
   - このモジュールに他のモジュールを取り込み、このモジュール内で定義されているコンポーネントやテンプレートが他のモジュールのクラスを使用できるようになる。
   - 他のモジュールの ```providers``` ・ ```exports``` に定義されたものを使用できるようになる。
 - ```providers```
-  - creators of services that this module contributes to the global collection of services; they become accessible in all parts of the app.
-  - このモジュールおよび関係するコンポーネント・サービスへインジェクトするためのサービスを定義・インスタンス化する。
+  - このモジュールおよび関係するコンポーネント・サービスへインジェクトするためのサービスクラスを定義・インスタンス化する。
 - ```declarations```
-  - the view classes that belong to this module. Angular has three kinds of view classes: components, directives, and pipes.
-  - このモジュールが所属させるビュークラスを指定する。Angularは、コンポーネント、ディレクティブ、パイプの３種類のビュークラスを持つ。
+  - このモジュールに所属させるビュークラスを指定する。Angularのビュークラスには、 **コンポーネント** 、 **ディレクティブ** 、 **パイプ** がある。
 - ```exports```
-  - the subset of declarations that should be visible and usable in the component templates of other modules.
-  - 他のモジュールのコンポーネントやテンプレードで使用可能となるサブセットの定義。
-  - このモジュール内のクラスを他のモジュールから使用可能にする。 ```imports``` の逆。
+  - このモジュール内のクラスを他のモジュールのコンポーネント・テンプレートで使用可能にする。
+  - ```imports``` の逆。
 - ```bootstrap```
-  - the main application view, called the root component, that hosts all other app views. Only the root module should set this bootstrap property.
-  - **ルートコンポーネント** を定義する。ルートコンポーネントはアプリケーションのメインビュー。 **ルートモジュールにだけ** ```bootstarp``` プロパティを設定する。
+  - **ルートコンポーネント** を定義する。ルートコンポーネントはアプリケーションのメインビュー。
+  - **ルートモジュールにだけ** に ```bootstarp``` プロパティを設定する。
 
 以下が **ルートモジュール** を指定する方法（ ```src/main.ts``` ）。
 
@@ -230,10 +248,11 @@ import { BrowserModule } from '@angular/platform-browser';
 imports:      [ BrowserModule ],
 ```
 
-## コンポーネント
+## コンポーネント（@Component）
 
 コンポーネントはビューの役割を担う。  
-コンポーネントクラス内で定義したフィールド変数やメソッドは、テンプレートで直接使用できる。
+コンポーネントクラス内で定義したフィールド変数やメソッドは、テンプレートから直接使用できる。  
+ロジックは基本的にコンポーネント内に記載し、サービスクラスをDIしたりする。
 
 ```typescript
 @Component({
@@ -247,11 +266,31 @@ export class HeroListComponent implements OnInit {
 }
 ```
 
-## テンプレート
+```@Component``` の代表的なメタデータプロパティは以下。
 
-テンプレートはコンポーネントのビューとして使われるHTML。  
-コンポーネントクラスの ```@Component``` アノテーションのメタデータ直接記載（ ```template``` ）することも、別ファイルとして作成して読み込む（ ```templateUrl``` ）ことも可能。  
-テンプレート内では、HTMLの属性として **ディレクティブ** （ ```*ngFor``` など）を使用することができる。
+- moduleId
+  - このモジュールが定義されるファイルのES/CommonJSモジュールID
+- selector
+  - このコンポーネントのHTMLタグ名を定義する。
+- template
+  - テンプレートを直接記載する。
+- templateUrl
+  - テンプレートファイルのパスを指定する。
+- styles
+  - スタイルシート（CSSやSass）を直接記載する。このコンポーネント外には影響が無い。
+- styleUrls
+  - スタイルシートファイルのパスを指定する。このコンポーネント外には影響が無い。
+- providers
+  - このコンポーネントがDI経由で使用するサービスクラスを指定する。
+  - コンポーネントクラスの ```constructor``` の引数でも指定する必要がある。
+
+その他の ```@Component``` のメタデータは[ここ](https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html)で確認できる。
+
+## テンプレート（Templates）
+
+テンプレートはコンポーネントのDOMとして使われるHTML。  
+コンポーネントクラスの ```@Component``` デコレータのメタデータに直接記載（ ```template``` ）することも、別ファイルとして作成して読み込む（ ```templateUrl``` ）ことも可能。  
+テンプレート内では、HTMLの属性として **ディレクティブ** （ ```*ngFor``` など）、コンポーネントとのデータ・機能のやりとりに **データバインディング** を使用することができる。
 
 - コンポーネントフィールドへのアクセス
   - ```*ngFor``` ： コレクションフィールドの値にアクセス
@@ -260,47 +299,20 @@ export class HeroListComponent implements OnInit {
   - ```(click)="onClickMe()"``` ： クリック時に ```onClickMe()``` メソッドを呼び出す
   - ```(keyup)="onKey($event)"``` ： キーアップ時にイベントを引数に ```onKey()``` メソッドを呼び出す
 
-また、テンプレートにはスタイルシート（CSS、Sassなど）を指定することができ、```@Component``` アノテーションのメタデータ（ ```styles``` 、 ```styleUrls``` ）で指定することができる。
+また、テンプレートにはスタイルシート（CSS、Sassなど）を指定することができ、```@Component``` デコレータのメタデータ（ ```styles``` 、 ```styleUrls``` ）で指定することができる。
 
-## メタデータ
+## メタデータ（Metadata）
 
-メタデータはアノテーションに設定するプロパティ。  
+メタデータは **デコレータ** （ ```@``` から始まるJavaでいうアノテーション）に設定するプロパティ。  
 Angularにクラスがどのように挙動するか知らせる役割。  
-```@Component``` 内に以下のように設定できる。
-
-```typescript
-@Component({
-  moduleId: module.id,
-  selector:    'hero-list',
-  templateUrl: './hero-list.component.html',
-  providers:  [ HeroService ]
-})
-export class HeroListComponent implements OnInit {
-/* . . . */
-}
-```
-
-- moduleId
-  - sets the source of the base address (module.id) for module-relative URLs such as the templateUrl.
-- selector
-  - CSS selector that tells Angular to create and insert an instance of this component where it finds a <hero-list> tag in parent HTML. For example, if an app's HTML contains <hero-list></hero-list>, then Angular inserts an instance of the HeroListComponent view between those tags.
-- templateUrl
-  - このコンポーネントで使用するHTMLの **テンプレート** のパスを指定する。
-- providers
-  - このコンポーネントがDI経由で使用するサービスクラスを指定する。
-  - コンポーネントクラスの ```constructor``` の引数でも指定する必要がある。
-
-```@Injectable``` 、 ```@Input``` 、 ```@Output``` などのアノテーションにもメタデータを設定できる。  
-APIリファレンスにて使用できるメタデータを確認できる。  
-例えば ```@Component``` のメタデータは[ここ](https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html)で確認できる。
+```@Injectable``` 、 ```@Input``` 、 ```@Output``` など様々なデコレータにメタデータを設定できる。  
+もう十分前述しているのでこの程度で。
 
 
-## データバインディング
+## データバインディング（Data Binding）
 
-DOMとコンポーネント間のデータ授受を行う機能。  
+テンプレートとコンポーネント間のデータ・機能のやりとりを行う機能。  
 以下のように４種類ある。
-
-<img src="https://angular.io/resources/images/devguide/architecture/databinding.png" />
 
 - 単方向バインド（interpolation）
   - ```<li>{{hero.name}}</li>```
@@ -310,13 +322,12 @@ DOMとコンポーネント間のデータ授受を行う機能。
   - 親コンポーネントの ```selectedHero``` の値を、子コンポーネントの ```hero``` へ渡している
 - イベントバインド（event binding）
   - ```<li (click)="selectHero(hero)"></li>```
-  - ユーザのクリックにより ```selectHero``` が呼び出される。
+  - ユーザのクリックにより ```selectHero()``` メソッドが呼び出される。
 - 双方向バインド（Two-way data binding）
   - ```<input [(ngModel)]="hero.name">```
-  - ```ngModel``` を用いてproperty bindingとevent bindingを両方同時に実現する。
-  - In two-way binding, a data property value flows to the input box from the component as with property binding. The user's changes also flow back to the component, resetting the property to the latest value, as with event binding.
+  - ```ngModel``` を用いて **参照と更新** を両方同時に実現する。
 
-```ngModel``` のようにHTMLタグの属性として記述できるAngularの機能を **ディレクティブ** という。
+```ngModel``` のようにテンプレートのHTMLタグの属性として記述できるAngularの機能を **ディレクティブ** という。
 
 ### イベント
 
@@ -338,48 +349,59 @@ onClickButtonWithEvent(event:any) {
  }
 ```
 
-## ディレクティブ
+## ディレクテイブ（@Directive）
 
-```@Directive``` 。  
-動的にテンプレート（というかDOM？）を作る機能。
+ディレクティブは前述の通り、テンプレートのHTMLタグの属性として指定できるAngularの機能。  
+モジュール・コンポーネント間のデータの授受や、ループ・条件分岐といった動的なDOMの機能を提供する。
 
-```
+```html
 <li *ngFor="let hero of heroes"></li>
 <hero-detail *ngIf="selectedHero"></hero-detail>
 ```
 
-## サービス
+```@Directive``` デコレータでディレクティブを自作できる。  
+ここでは割愛。[参考](https://angular.io/docs/ts/latest/guide/attribute-directives.html)
+
+## パイプ（@Pipe）
+
+Pipeはテンプレート内で文字列操作の機能を提供する。  
+例えば、Dateオブジェクトをあるフォーマットに整形して表示できる。
+
+```typescript
+// コンポーネントクラスのフィールド
+let birthday = new Date(1985,3,1); // これで1985年4月1日 なことに注意
+```
+
+上記をテンプレードで以下のように指定することにより **yy/MM/dd** 形式で表示できる。
+
+```html
+<p>{{ birthday | date:"yy/MM/dd" }}</p> <!-- 1985/04/01 と表示される -->
+```
+
+他にも下記のようなパイプがある。
+
+- DatePipe
+  - 上記例。日付を整形する。
+  - ```date_expression | date[:format]```
+- UpperCasePipe
+  - 文字列を大文字にする。
+  - ```expression | uppercase```
+- JsonPipe
+  - 入力値にJSON.stringfyを実行して返す。
+  - ```expression | json```
+
+また、パイプはこんな ```{{ birthday | date | uppercase}}``` 感じでチェーンできる。
+
+さらに、```@Pipe``` デコレータでパイプを自作できる。  
+ここでは割愛。[参考](https://angular.io/docs/ts/latest/guide/pipes.html)
+
+
+## サービス（Services）・DI（Dependency injection / @Injectable）
 
 サービスは ```export``` された通常のtypescriptクラス。  
-後述のインジェクタを使用してコンポーネントや他サービスのコンストラクタ経由でインジェクトする。
+DIを使用してコンポーネントや他サービスクラスにサービスクラスをインジェクトできる。
 
-```
-export class Logger {
-  log(msg: any)   { console.log(msg); }
-  error(msg: any) { console.error(msg); }
-  warn(msg: any)  { console.warn(msg); }
-}
-```
-
-```
-export class HeroService {
-  private heroes: Hero[] = [];
-
-  constructor(
-    private backend: BackendService,
-    private logger: Logger) { }
-
-  getHeroes() {
-    this.backend.getAll(Hero).then( (heroes: Hero[]) => {
-      this.logger.log(`Fetched ${heroes.length} heroes.`);
-      this.heroes.push(...heroes); // fill cache
-    });
-    return this.heroes;
-  }
-}
-```
-
-### 作成手順
+### 作成例
 
 ```sh
 $ ng generate service sample/sample
@@ -389,18 +411,8 @@ installing service
   WARNING Service is generated but not provided, it must be provided to be used
 ```
 
-上記で作成した ```src/app/sample/sample.service.ts``` をロードするには、使用するモジュールとコンポーネントにロードする。
-
-```typescript
-import { SampleService } from './sample/sample.service' // インポート
-...
-@NgModule({
-  ...
-  providers: [SampleService], // providers に追加
-  ...
-})
-export class AppModule { }
-```
+上記で作成した ```src/app/sample/sample.service.ts``` をDIするには、使用するモジュール・コンポーネントにimport、メタデータ ```providers``` およびコンストラクタへの指定を行う。  
+以下コンポーネントへの導入例。
 
 ```typescript
 ...
@@ -408,54 +420,48 @@ import { SampleService } from './sample/sample.service' // インポート
 
 @Component({
   ...
+  providers: [SampleService], // providers に追加
+  ...
 })
 export class AppComponent {
   title: string;
 
   constructor(
-    sampleService: SampleService // コンストラクタに設定
+    private sampleService: SampleService // コンストラクタに設定
   ){
     this.title = sampleService.getTitle();
   }
 }
 ```
 
-## インジェクタ
+### DI・インジェクタ
 
-サービスをコンポーネントのコンストラクタ経由でインジェクトする機能。  
-以下のようにモジュールの ```providers``` プロパティで使用するインジェクト候補のサービスを定義する。
+サービスをモジュールやコンポーネントで使用できるようにインジェクトする機能。  
+前述の通り、モジュール・コンポーネントにimport、メタデータ ```providers``` およびコンストラクタへの指定を行う。
 
-```
-providers: [
-  BackendService,
-  HeroService,
-  Logger
-],
-```
-
-```@Injectable``` アノテーションがついたサービスクラスは多段Injectすることが可能になる。  
-一段Injectはアノテーションが無しでもOK。
+```@Injectable``` デコレータがついたサービスクラスは多段Inject（DIのDI）することが可能になる。  
+一段Injectはデコレータが無しでもOKだがつけておいても問題ない。
 
 ## フォームとバリデータ
 
 http://codezine.jp/article/detail/9596?p=4
 
-# APIリファレンス
+## Angularライブラリ
 
-APIリファレンスは[ここ](https://angular.io/docs/ts/latest/api/)。  
-クラスの前に記号がついており、それぞれ以下の意味。
+Angularのライブラリには様々用意されており、APIリファレンスは[ここ](https://angular.io/docs/ts/latest/api/)。  
+リファレンスではクラスの前に記号がついており、それぞれ以下の意味。
 
 |記号|意味|
 |:---|:---|
 |D|Directive。ディレクティブ。|
-|P|Pipe。|
-|@|Decorator。所謂アノテーション。|
-|C|Class。|
-|I|Interface。|
-|F|Function。|
-|E|Enum。|
-|T|Type Alias。|
-|K|Const。|
+|P|Pipe。パイプ。|
+|@|Decorator。デコレータ。Javaでいう所謂アノテーション。|
+|C|Class。普通のTypeScriptのクラス。|
+|I|Interface。普通のTypeScriptのインターフェース。|
+|F|Function。関数。|
+|E|Enum。普通の列挙型。|
+|T|Type Alias。なんかわからん。|
+|K|Const。定数クラス。|
 
 
 # その他話題、メモ

@@ -87,6 +87,17 @@ export class AppComponent {
 - headers : Headers
 - toString() : string
 
+また、Responseは[Bodyクラス](https://github.com/angular/http-builds/blob/master/%40angular/http.js)を継承しており、メソッドは以下の通り。
+
+- json()
+  - ボディをJSON形式で返却する
+- text()
+  - ボディを文字列で返却する
+- arrayBuffer()
+  - ボディをArrayBuffer形式で返却する
+- blob()
+  - ボディをBlob形式で返却する
+
 [Observableクラス](http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html)は以下のようなメソッドを提供しており、レスポンスに対して様々な処理を挟むことができる。
 
 - map

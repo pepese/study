@@ -101,12 +101,19 @@ export class AppComponent {
 [Observableクラス](http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html)は以下のようなメソッドを提供しており、レスポンスに対して様々な処理を挟むことができる。
 
 - map
-  - レスポンスに対してmap処理を挟む
+  - レスポンスに対してmap処理、オブジェクトを変換する処理を挟む
+- subscribe
+  - 任意の処理を記載することができる
+  - レスポンスを受けてからの処理は全てここに記載する必要がある
 - catch
   - エラー発生時のハンドリング処理を行う
 
 なお、Observableクラスは [RxJS](https://github.com/Reactive-Extensions/RxJS) パッケージ提供となっている。  
 Rx(Reactive Extensions)、関数型リアクティブプログラミングの機能を提供する。
+
+# rxjs/Observable
+
+RxJS（Reactive Extensions for JavaScript）は、Observables というアーキテクチャを用いたリアクティブ・プログラミング用のライブラリで非同期処理を簡易に実現する。
 
 # 参考
 

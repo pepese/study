@@ -3,12 +3,14 @@ Expressについては以下参照。
 
 [http://blog.pepese.com/entry/2017/02/16/154804:embed:cite]
 
+LINE部分は **LINE@** と **Messaging API** を使用した。
+
 # 作成手順
 
 ```bash
 $ express express-sample --view=pug --git
 $ cd line-chatbot && npm install
-$ npm install request --save
+$ npm install request crypto --save
 $ mkdir config
 $ touch config/config.json
 ```
@@ -21,11 +23,11 @@ Viewはなんでもいいが、デフォルトは嫌なのでとりあえす指�
 
 ## ```routes/index.js```
 
-<script src="https://github.com/pepese/js-sample/blob/master/line-chatbot/routes/index.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/line-chatbot/routes/index.js?footer=0"></script>
 
 ## ```config/config.json```
 
-<script src="https://github.com/pepese/js-sample/blob/master/line-chatbot/config/config.json?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/line-chatbot/config/config.json?footer=0"></script>
 
 ## 実行
 
@@ -73,7 +75,8 @@ LINEに限らずWebhookに対応するアプリケーションを作成する際
 - ```X-Line-Signature:{Signature}```
   - リクエストの送信元がLINEであることを確認するために署名検証するためのもの
   - ヘッダの値と、request body と Channel secret から計算した signature が同じものであることをリクエストごとに 必ず検証必要がある
-    - 上記のサンプルではやってない。。。
+    1. Channel secretを秘密鍵として、HMAC-SHA256アルゴリズムによりrequest bodyのダイジェスト値を得る。
+    1. ダイジェスト値をBASE64エンコードした文字列が、request headerに付与されたsignatureと一致することを確認する。
 
 ## Reply message リクエスト
 
@@ -99,3 +102,4 @@ LINEに限らずWebhookに対応するアプリケーションを作成する際
 
 - ```Content-Type:application/json```
 - ```Authorization: Bearer {ENTER_ACCESS_TOKEN}```
+  - ```{ENTER_ACCESS_TOKEN}``` に Channel Access Token を付与する

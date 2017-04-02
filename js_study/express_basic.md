@@ -308,3 +308,38 @@ module.exports = router; // 外部モジュールからrequireできるように
 ```javascript
 const index = require('./index');
 ```
+
+## Expressアプリケーションの設定
+
+Expressでは、以下の記載で「key-value」形式でアプリケーションに対して様々な設定ができる。
+
+```javascript
+app.set(name, value);
+app.get(name);
+```
+
+代表的な設定項目としては以下（[詳細](http://expressjs.com/ja/api.html#app.settings.table)）があるが、単にインメモリキーバリューストア（好きな「key-value」を設定できる）としても使用できる。
+
+|Property|Type|Description|Default|
+|:---:|:---:|:---|:---:|
+|case sensitive routing|Boolean|ルーティング時、URLの大文字・小文字を区別する。|N/A (undefined)|
+|env|String|環境名。productionとかdevelopmentとか。|process.env.NODE_ENV or “development”|
+|etag|Varied| ```Etag``` レスポンスヘッダの設定を行う。|weak|
+|jsonp callback name|String|JSONP callback名を設定する。|“callback”|
+|json replacer|Varied|```JSON.stringify``` で利用される引数 ```replacer``` の設定。JSONの各メンバの値の変換の設定ができる。|N/A (undefined)|
+|json spaces|Varied|```JSON.stringify``` で利用される引数 ```space``` の設定。JSONパース時に見やすいようにインデントのスペースを設定できる。|N/A (undefined)|
+|query parser|Varied|URLクエリパラメータのパースの設定ができる。 ```simple``` 、 ```extended``` 、カスタマイズから選択できる。 ```simple``` はNodeJSが内包するNativeのクエリパーサ。 ```extended``` は サードパーティモジュール ```qs``` 。カスタマイズは関数を設定し、その関数はクエリパラメータの文字列を受け取り、キー・バリューのオブジェクトを返却するよう実装する。|"extended"|
+|strict routing|Boolean|ルーティングにおいてURLの ```/foo``` と ```/foo/``` を区別するかどうか設定する。|N/A (undefined)|
+|subdomain offset|Number|サブドメインにアクセスするために削除するホストのドット区切り部分の数。|2|
+|trust proxy|Varied|信頼するWebプロキシの設定を行う。詳細は、[ここ](http://expressjs.com/ja/guide/behind-proxies.html)を参照。|false (disabled)|
+|views|String or Array|Viewを配置するディレクトリを文字列もしくは配列で設定する。|process.cwd() + '/views'|
+|view cache|Boolean|Viewテンプレートコンパイルキャッシュを有効にする。|true in production, otherwise undefined.|
+|view engine|String|Viewエンジンの設定を行う。|N/A (undefined)|
+|x-powered-by|Boolean|"X-Powered-By: Express" HTTPヘッダを有効にする。|true|
+
+## モジュール間で変数をやりとりする方法
+
+- http://memo.sugyan.com/entry/20120110/1326197416
+- NodeJSでglobal変数を扱う方法
+  - ```var global.hoge = 'hogehoge';``` みたいに、頭にglobalを付けるとglobalスコープで扱われる。
+  - ただし、 ```require('./global.js');``` のようにグローバル変数を定義したモジュールを使用するモジュールでロードする必要がある。

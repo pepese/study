@@ -102,6 +102,9 @@ $ touch app/views/.gitkeep
 $ mkdir app/config              // 設定ファイル用ディレクトリ作成
 $ touch app/config/config.json  // 環境差分ファイル作成
 $ mkdir app/log                 // ログ出力用ディレクトリ作成
+$ touch app/log/.gitkeep
+$ mkdir app/test                // テストスクリプト用のディレクトリ作成
+$ mkdir app/test/.gitkeep
 ```
 
 ### app/app.js

@@ -1,0 +1,5 @@
+- NodeJSのヒープとか
+  - http://qiita.com/ksato9700/items/b21383e613b6dc308dca
+  - https://nodejs.org/dist/latest-v7.x/docs/api/v8.html
+- NodeJSのタイムアウトとか
+  - http://nodejs.jp/nodejs.org_ja/api/http.html#http_server_settimeout_msecs_callback

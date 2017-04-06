@@ -3,13 +3,16 @@ Angular（所謂Angular2）でMEANスタックのアプリを作成してみる�
 
 # プロジェクト作成手順
 
-以下のアプリケーションを1つのプロジェクト内に作成する。
+以下のアプリケーションを1つのプロジェクト内に同梱して作成する。
 
 - フロントエンド
   - Angularベースのブラウザアプリケーション
   - サーバサイドのREST APIで通信する
+  - **Angular CLI** を使用する
+  - ソースコードディレクトリは ```src/```
 - サーバサイド
   - NodeJS、ExpressベースのWebアプリケーション
+  - ソースコードディレクトリは ```app/```
 
 フロントエンド、サーバサイドの順で作成すること。
 
@@ -82,52 +85,14 @@ Angular CLIで作成したプロジェクトにサーバサイド、つまりExp
 フロントエンドとは異なりトランスパイル不要。  
 フロントエンドトランスパイル後の ```dist``` をExpress側で公開ディレクトリに設定する。
 
-### Expressの追加
+サーバサイドアプリケーションを作成する方法は以下を参照。  
+「フロントエンドアプリケーションをプロジェクトに同梱する場合」のほうの構成。
 
-```sh
-$ npm npm install -g forever
-$ npm install express@5.0.0-alpha.5 body-parser cookie-parser debug morgan pug serve-favicon request fs --save
-$ mkdir app                     // サーバサイドExpressアプリ用のソースディレクトリ作成
-$ touch app/app.js              // Expressアプリケーション起動ポイントの作成
-$ mkdir app/api                 // REST API用のコントローラディレクトリ作成
-$ touch app/api/index.js
-$ mkdir app/controllers         // VIEW用のコントローラディレクトリ作成
-$ touch app/controllers/.gitkeep
-$ mkdir app/models              // Mongoose（MongoDB）用のモデルディレクトリ作成
-$ touch app/models/.gitkeep
-$ mkdir app/repositories        // DAO/Repository用のディレクトリ作成
-$ touch app/repositories/.gitkeep
-$ mkdir app/views               // 画面用のディレクトリ作成
-$ touch app/views/.gitkeep
-$ mkdir app/config              // 設定ファイル用ディレクトリ作成
-$ touch app/config/config.json  // 環境差分ファイル作成
-$ mkdir app/log                 // ログ出力用ディレクトリ作成
-$ touch app/log/.gitkeep
-$ mkdir app/test                // テストスクリプト用のディレクトリ作成
-$ mkdir app/test/.gitkeep
-```
-
-### app/app.js
-
-```
-```
-
-### app/api/index.js
-
-```
-```
-
-### app/config/config.json
-
-```
-```
-
+[http://blog.pepese.com/entry/2017/04/06/221119:embed:cite]
 
 ## 起動
 
 ```
-$ ng build // フロントエンドのビルド
+$ ng build                                      // フロントエンドのビルド
 $ NODE_ENV=production forever start app/app.js  // サーバサイドアプリ起動
 ```
-
-```NODE_ENV``` で環境を指定することができる。デフォルトは ```development``` 。

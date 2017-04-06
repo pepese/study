@@ -12,151 +12,117 @@ Node.jsのWebフレームワーク ```Express``` 触ってみた。
 $ npm install express --save
 ```
 
-Express単体を入れる時はこれ。  
-以降の説明は ```express-generator``` を使うので上記はやらなくていい。
+Expressだけインストールするなら上記。
 
-## express-generatorのインストール
+# Expressアプリケーションの構築
 
-```express-generator``` は Expressベースのアプリ雛形を作成するツール。  
-RailsのScaffoldのようなもの。
+## Expressプロジェクトの作成
 
 ```sh
-$ npm install -g express-generator
-$ ndenv rehash # ndenvを使っている人は
+$ npm install -g forever
+$ mkdir express-sample          // プロジェクトディレクトリの作成
+$ cd express-sample
+$ npm init
+$ npm install express@5.0.0-alpha.5 body-parser cookie-parser debug morgan pug serve-favicon request fs file-stream-rotator --save
+$ touch .gitignore
+$ mkdir app                     // サーバサイドExpressアプリ用のソースディレクトリ作成
+$ touch app/app.js              // Expressアプリケーション起動ポイントの作成
+$ mkdir app/models              // Mongoose（MongoDB）用のモデルディレクトリ作成
+$ touch app/models/.gitkeep
+$ mkdir app/repositories        // DAO/Repository用のディレクトリ作成
+$ touch app/repositories/.gitkeep
+$ mkdir app/config              // 設定ファイル用ディレクトリ作成
+$ touch app/config/config.json  // 環境差分ファイル作成
+$ mkdir app/log                 // ログ出力用ディレクトリ作成
+$ touch app/log/.gitkeep
+$ mkdir app/test                // テストスクリプト用のディレクトリ作成
+$ mkdir app/test/.gitkeep
 ```
 
-# サンプルアプリの作成
+Expressアプリケーションのソースディレクトリは ```app/``` だけで完結するようにする。
 
-以下の順で記載する。
+### フロントエンドアプリケーションをプロジェクトに同梱する場合
 
-- express-generatorの使い方
-- express-generatorで雛形作成
-- ディレクトリ構造
-- 実行と確認
-- コードを見てみる
-
-## express-generatorの使い方
+この場合、以下のようにディレクトリを作成する。
 
 ```sh
-$ express --help
-
-  Usage: express [options] [dir]
-
-  Options:
-
-    -h, --help           output usage information
-        --version        output the version number
-    -e, --ejs            add ejs engine support
-        --pug            add pug engine support
-        --hbs            add handlebars engine support
-    -H, --hogan          add hogan.js engine support
-    -v, --view <engine>  add view <engine> support (ejs|hbs|hjs|jade|pug|twig|vash) (defaults to jade)
-    -c, --css <engine>   add stylesheet <engine> support (less|stylus|compass|sass) (defaults to plain css)
-        --git            add .gitignore
-    -f, --force          force on non-empty directory
+$ mkdir app/api           // REST API用のコントローラディレクトリ作成
+$ touch app/api/.gitkeep
 ```
 
-## express-generatorで雛形作成
+フロントエンドアプリケーションのトランスパイル結果は ```express-sample/dist``` に出力されるものとし、サーバサイドアプリケーション（ ```express-sample/app``` ）は ```express-sample/dist``` をExpressの公開ディレクトリとする。  
+フロントエンドアプリケーションは ```app/api``` に実装したAPIにアクセスする。
 
-ExpressのデフォルトのView Template Engine は ```Jade``` だが、 Jadeは ```Pug``` にリネームされた。  
-今後、ExpressのデフォルトのView Template EngineはPugに置き換えられるため、ここでは ```Pug``` を使用する。
+### フロントエンドアプリケーションをプロジェクトに同梱せず、Expressからテンプレートエンジンを使用する場合
+
+この場合、以下のようにディレクトリを作成する。
 
 ```sh
-$ express express-sample --view=pug --git
-
-   create : express-sample
-   create : express-sample/package.json
-   create : express-sample/app.js
-   create : express-sample/.gitignore
-   create : express-sample/public
-   create : express-sample/public/javascripts
-   create : express-sample/public/stylesheets
-   create : express-sample/public/stylesheets/style.css
-   create : express-sample/public/images
-   create : express-sample/routes
-   create : express-sample/routes/index.js
-   create : express-sample/routes/users.js
-   create : express-sample/views
-   create : express-sample/views/index.pug
-   create : express-sample/views/layout.pug
-   create : express-sample/views/error.pug
-   create : express-sample/bin
-   create : express-sample/bin/www
-
-   install dependencies:
-     $ cd express-sample && npm install
-
-   run the app:
-     $ DEBUG=express-sample:* npm start
-
-$ cd express-sample/
-$ npm install
+$ mkdir app/controllers                  // VIEW用のコントローラディレクトリ作成
+$ touch app/controllers/.gitkeep
+$ mkdir app/views                        // 画面・テンプレート（Pugなど）用のディレクトリ作成
+$ touch app/views/.gitkeep
+$ mkdir app/public                       // 静的コンテンツ用のディレクトリ作成
+$ mkdir app/public/javascripts           // JS用のディレクトリ作成
+$ touch app/public/javascripts/.gitkeep
+$ mkdir app/public/stylesheets           // CSS用のディレクトリ作成
+$ touch app/public/stylesheets/style.css
+$ mkdir app/public/images                // 画像用のディレクトリ作成
+$ touch app/public/images/.gitkeep
 ```
 
-```express <プロジェクト名>``` コマンドでExpressの雛形プロジェクトが作成される。  
-npmのpackage.jsonが作成されているので「npm install」でモジュールをインストールする。  
-```npm start``` コマンド（package.jsonにて定義）で ```node ./bin/www``` が実行され、サービスが起動する。  
-「./bin/www」には、Express.jsでHTTPサービス（3000番ポート）が起動するJavaScriptがコーディングされており、「app.js」に記述されたサービスが実行される。
+## ソースコードの作成
 
-## ディレクトリ構造
+ 「フロントエンドアプリケーションをプロジェクトに同梱する場合」は以下を参照。
 
-```sh
-$ tree
-.
-├── app.js           # メインJavaScript
-├── bin/             # サービス起動JavaScript（www）置き場
-├── node_modules/    # npmモジュール置き場
-├── package.json
-├── public/          # 公開ディレクトリ
-│   ├── images/
-│   ├── javascripts/
-│   └── stylesheets/
-├── routes/          # ルーティング先のスクリプト置き場（MVCのCとロジックに相当）
-│   ├── index.js
-│   └── users.js
-└── views/           # View用のコード置き場（MVCのVに相当）
-    ├── error.pug
-    ├── index.pug
-    └── layout.pug
+[http://blog.pepese.com/entry/2017/04/06/222448:embed:cite]
+
+ここでは、「フロントエンドアプリケーションをプロジェクトに同梱せず、Expressからテンプレートエンジンを使用する場合」で、最低限動くViewアプリを構築するために以下のスクリプトを実装する。
+
+- ```app/app.js```
+- ```app/controllers/index.js```
+- ```app/controllers/users.js```
+- ```app/views/layout.pug```
+- ```app/views/index.pug```
+- ```app/views/error.pug```
+- ```app/config/config.json```
+
+### app/app.js
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/app.js?footer=0"></script>
+
+### app/controllers/index.js
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/index.js?footer=0"></script>
+
+### app/controllers/users.js
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/users.js?footer=0"></script>
+
+### app/views/layout.pug
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/views/layout.pug?footer=0"></script>
+
+### app/views/index.pug
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/views/index.pug?footer=0"></script>
+
+### app/views/error.pug
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/views/error.pug?footer=0"></script>
+
+### app/config/config.json
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/config/config.json?footer=0"></script>
+
+### 起動
+
+```
+$ NODE_ENV=production forever start app/app.js
 ```
 
-## 実行と確認
+```NODE_ENV``` で環境を指定することができる。デフォルトは ```development``` 。
 
-```sh
-# 実行
-$ npm start
-```
-
-```sh
-# 確認
-$ curl localhost:3000
-<!DOCTYPE html><html><head><title>Express</title><link rel="stylesheet" href="/stylesheets/style.css"></head><body><h1>Express</h1><p>Welcome to Express</p></body></html>
-$ curl localhost:3000/users
-respond with a resource
-```
-
-## コードを見てみる
-
-### app.js
-
-<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app.js?footer=0"></script>
-
-- 各種ライブラリのロード（ ```var xxx = require('xxx');``` ）
-- ルーティング先コントローラ層ロジックのロード（ ```var xxx = require('./routes/xxx');``` ）
-- Express本体オブジェクトの作成と設定（ ```var app = express();``` ）
-  - View Template Engine（ ```Pug``` ） の設定
-  - ロガー、パーサー、公開ディレクトリの設定
-  - ルーティン部先ロジックの設定（ ```app.use('/xxx', xxx);``` ）
-  - エラーハンドリングの設定
-
-
-### index.js
-
-<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/routes/index.js?footer=0"></script>
-
-### users.js
-
-<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/routes/users.js?footer=0"></script>
 
 # ちょっとExpressの機能解説
 
@@ -339,7 +305,11 @@ app.get(name);
 
 ## モジュール間で変数をやりとりする方法
 
-- http://memo.sugyan.com/entry/20120110/1326197416
-- NodeJSでglobal変数を扱う方法
-  - ```var global.hoge = 'hogehoge';``` みたいに、頭にglobalを付けるとglobalスコープで扱われる。
+- global変数を使う
+  - ```const global.hoge = 'hogehoge';``` みたいに、頭にglobalを付けるとglobalスコープで扱われる。
   - ただし、 ```require('./global.js');``` のようにグローバル変数を定義したモジュールを使用するモジュールでロードする必要がある。
+  - グローバル領域を汚染するので注意が必要
+- 共有変数用のモジュールを作成する
+  - ```module.exports = {};``` とだけ書いた ```common.js``` を作成する
+  - 他モジュールからは ```require('./common').hoge = hoge;``` で変数を代入でき、 ```const hoge = require('./common').hoge``` で変数を参照できる
+  - どんな変数を作ったからわからなくなるので、 ```common.js``` にはコメントくらい残しておく必要がある

@@ -35,8 +35,8 @@ $ mkdir app/config              // 設定ファイル用ディレクトリ作成
 $ touch app/config/config.json  // 環境差分ファイル作成
 $ mkdir app/log                 // ログ出力用ディレクトリ作成
 $ touch app/log/.gitkeep
-$ mkdir app/test                // テストスクリプト用のディレクトリ作成
-$ mkdir app/test/.gitkeep
+$ mkdir app/spec                // テストスクリプト用のディレクトリ作成
+$ mkdir app/spec/.gitkeep
 ```
 
 Expressアプリケーションのソースディレクトリは ```app/``` だけで完結するようにする。
@@ -157,7 +157,7 @@ app.use([path,] callback [, callback...])
 
 ```path``` を記載しない場合は **全てのリクエスト** に対してミドルウェア関数（ ```callback``` :コールバック関数）が実行される。  
 コールバック関数には ```(req, res, next)``` の3つを渡すことができる。
-```next()``` を実行する次のミドルウェア関数に処理が移る。（ **```next()``` を実行しないと処理は終わる** ）
+```next()``` を実行すると次のミドルウェア関数に処理が移る。（ **```next()``` を実行しないと処理は終わる** ）
 
 ```javascript
 app.use( (req, res, next) => {

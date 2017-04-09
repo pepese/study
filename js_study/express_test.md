@@ -35,7 +35,7 @@ $ ndenv rehash
 
 ```sh
 $ npm install karma-mocha karma-chai --save-dev // これは違うかも。メモ。
-$ npm install mocha should chai gulp-istanbul gulp-mocha --save-dev
+$ npm install mocha should chai sinon gulp-istanbul gulp-mocha --save-dev
 ```
 
 ## ディレクトリ作成
@@ -54,35 +54,13 @@ $ mkdir app/spec/controllers
 
 ## gulpfile.js
 
-```javascript
-var gulp = require('gulp');
-var istanbul = require('gulp-istanbul');
-var mocha = require('gulp-mocha');
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/gulpfile.js?footer=0"></script>
 
-gulp.task('pre-test', function () {
-  return gulp.src(['app/controllers/*.js'])
-    // Covering files
-    .pipe(istanbul())
-    // Force `require` to return covered files
-    .pipe(istanbul.hookRequire());
-});
+## app/spec/controllers/get_index.spec.js
 
-gulp.task('test', ['pre-test'], function () {
-  return gulp.src(['app/spec/**/*.js'])
-    .pipe(mocha())
-    // Creating the reports after tests ran
-    .pipe(istanbul.writeReports())
-    // Enforce a coverage of at least 90%
-    .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
-});
-```
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/spec/controllers/get_index.spec.js?footer=0"></script>
 
-## app/spec/controllers/index.spec.js
-
-```javascript
-```
-
-## app/spec/controllers/users.spec.js
+## app/spec/controllers/get_users.spec.js
 
 ```javascript
 ```

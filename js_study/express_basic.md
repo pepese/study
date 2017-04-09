@@ -80,12 +80,18 @@ $ touch app/public/images/.gitkeep
 ここでは、「フロントエンドアプリケーションをプロジェクトに同梱せず、Expressからテンプレートエンジンを使用する場合」で、最低限動くViewアプリを構築するために以下のスクリプトを実装する。
 
 - ```app/app.js```
-- ```app/controllers/index.js```
-- ```app/controllers/users.js```
+  - Expressアプリケーションのミドルウェアの設定と起動処理
+- ```app/controllers/router.js```
+  - Viewを処理するモジュールへのルーティングを行う
+- ```app/controllers/get_index.js```
+  - Index画面を表示する
+- ```app/controllers/get_users.js```
+  - Users画面を表示する
 - ```app/views/layout.pug```
 - ```app/views/index.pug```
 - ```app/views/error.pug```
 - ```app/config/config.json```
+  - 環境差分設定ファイル
 
 ### app/app.js
 
@@ -93,11 +99,15 @@ $ touch app/public/images/.gitkeep
 
 ### app/controllers/index.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/index.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/router.js?footer=0"></script>
 
-### app/controllers/users.js
+### app/controllers/get_index.js
 
-<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/users.js?footer=0"></script>
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/get_index.js?footer=0"></script>
+
+### app/controllers/get_users.js
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/get_users.js?footer=0"></script>
 
 ### app/views/layout.pug
 

@@ -70,3 +70,65 @@ $ mkdir app/spec/controllers
 ```sh
 $ gulp test
 ```
+
+# ちょっと解説
+
+## Sinon
+
+- https://codezine.jp/article/detail/7729
+
+- スパイ
+  - 関数がどのように呼び出されたかを記録する
+- スタブ
+  - 関数の戻り値をあらかじめ設定し、その結果でテストを行う
+- モック
+  - 実行前に関数の実行回数など期待する結果を指定しておく
+- フェイク
+  - 問い合わせるDBやサーバ処理などを単純な実装に置き換える
+
+### スパイ
+
+スパイオブジェクトの作成方法は以下。
+
+|呼び出し方法|概要|
+|:---|:---|
+|var spy = sinon.spy();|空のスパイオブジェクトを生成。主にコールバックで渡す無名関数などに対して使用する。|
+|var spy = sinon.spy(myFunc);|特定の関数に対してスパイオブジェクトを作成する。|
+|var spy = sinon.spy(object, "method");|オブジェクト内のメソッドに対してスパイオブジェクトを生成する。|
+
+スパイオブジェクトの主な関数は以下。
+
+|呼び出し方法|概要|
+|:---|:---|
+|spy.calledWith(arg1, arg2, ...);|指定した引数で関数が呼び出されたかを確認する。|
+|spy.callCount|呼び出された回数を返す。|
+|spy.called|呼び出された場合にtrueを返す。|
+|spy.calledOn(obj);|指定したオブジェクトで関数が実行された場合trueを返す。|
+|spy.calledOnce|1回呼び出された場合trueを返す。|
+|spy.calledTwice|2回呼び出された場合trueを返す。|
+|spy.exceptions|発生したexceptionを返す。|
+|spy.returnValues|実行後の戻り値を返す。|
+|spy.withArgs(arg1, arg2, ...);|指定した引数で関数が呼び出された場合にのみ、スパイオブジェクトを返す。|
+
+### スタブ
+
+スタブオブジェクトの作成方法は以下。
+
+|呼び出し方法|概要|
+|:---|:---|
+|var stub = sinon.stub();|空のスタブオブジェクトを生成。主にコールバックで渡す無名関数などに対して使用する。|
+|var stub = sinon.stub(object, "method");|特定の関数に対してスタブオブジェクトを作成する。|
+|var stub = sinon.stub(object, "method", func);|特定の関数に対してスタブオブジェクトを作成し、指定した関数で処理を上書きします。|
+|var stub = sinon.stub(obj);|対象オブジェクトのメソッドをすべてスタブにする。|
+
+スタブオブジェクトの主な関数は以下。
+
+|呼び出し方法|概要|
+|:---|:---|
+|stub.returns(obj);|呼び出し時のリターン値を指定する。|
+|stub.throws(obj);|呼び出し時に指定したExceptionを発生させる。|
+|stub.onCall(n);|n回目のスタブオブジェクトを返す。|
+|stub.onFirstCall();|1回目のスタブオブジェクトを返す。|
+|stub.onSecondCall();|2回目のスタブオブジェクトを返す。|
+
+### モック

@@ -516,6 +516,7 @@ N-gramモデルとは、「ある文字列の中で、n個の文字列または�
   - http://qiita.com/halhorn/items/675be9559ed92e1c2049
   - http://b.hatena.ne.jp/entry/qiita.com/taku910/items/7e52f1e58d0ea6e7859c
 - [自然言語処理における前処理の種類とその威力](http://qiita.com/Hironsan/items/2466fe0f344115aff177)
+- [対話botの技術](https://speakerdeck.com/kazoo04/dui-hua-botfalseji-shu)
 - [言語処理100本ノック 2015](http://www.cl.ecei.tohoku.ac.jp/nlp100/)
 - [同志社大学 R、R言語、R環境・・・・・・](https://www1.doshisha.ac.jp/~mjin/R/)
 

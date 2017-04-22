@@ -7,14 +7,8 @@ NodeJS、Expressアプリケーションのテストをしてみる。
   - Chai
 - モック
   - Sinon.JS
-- テストランナー
-  - Karma
-    - いらんかも。。。
 - カバレッジ
   - istanbul
-
-- MochaとChai
-  - http://qiita.com/y_hokkey/items/f73ea6b3d5f6902396b6
 
 以下の記事を読んだ前提で書く。
 
@@ -35,8 +29,11 @@ $ ndenv rehash
 
 ```sh
 $ npm install karma-mocha karma-chai --save-dev // これは違うかも。メモ。
-$ npm install mocha should chai sinon gulp-istanbul gulp-mocha --save-dev
+$ npm install mocha should chai sinon gulp-debug gulp-istanbul gulp-mocha@3.0.1 isparta --save-dev
 ```
+
+- **注意**
+  - [*istanbul* は 2017/4/22 時点では *gulp-mocha* の4系には対応しておらず、 *3.0.1* にする必要がある](https://github.com/SBoudrias/gulp-istanbul)
 
 ## ディレクトリ作成
 
@@ -59,11 +56,6 @@ $ mkdir app/spec/controllers
 ## app/spec/controllers/get_index.spec.js
 
 <script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/spec/controllers/get_index.spec.js?footer=0"></script>
-
-## app/spec/controllers/get_users.spec.js
-
-```javascript
-```
 
 ## 実行
 
@@ -132,3 +124,9 @@ $ gulp test
 |stub.onSecondCall();|2回目のスタブオブジェクトを返す。|
 
 ### モック
+
+
+# 参考
+
+- MochaとChai
+  - http://qiita.com/y_hokkey/items/f73ea6b3d5f6902396b6

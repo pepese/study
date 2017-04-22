@@ -9,6 +9,8 @@ NodeJS、Expressアプリケーションのテストをしてみる。
   - Sinon.JS
 - カバレッジ
   - istanbul
+- ルーティングのテスト
+  - supertest
 
 以下の記事を読んだ前提で書く。
 
@@ -28,8 +30,7 @@ $ ndenv rehash
 プロジェクトディレクトリで以下を実行。
 
 ```sh
-$ npm install karma-mocha karma-chai --save-dev // これは違うかも。メモ。
-$ npm install mocha should chai sinon gulp-debug gulp-istanbul gulp-mocha@3.0.1 isparta --save-dev
+$ npm install mocha should chai sinon supertest gulp-debug gulp-istanbul gulp-mocha@3.0.1 isparta --save-dev
 ```
 
 - **注意**
@@ -53,9 +54,17 @@ $ mkdir app/spec/controllers
 
 <script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/gulpfile.js?footer=0"></script>
 
-## app/spec/controllers/get_index.spec.js
+## モジュールのテスト
+
+### app/spec/controllers/get_index.spec.js
 
 <script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/spec/controllers/get_index.spec.js?footer=0"></script>
+
+## ルーティングのテスト
+
+**supertest** を使用してルーティングのテストを実装する。  
+ただし、複雑なAPIや画面のテストはe2eテストでカバーするとして、ここでは簡易なルーティングのテストのみ。  
+**なんか動かん。。。**
 
 ## 実行
 

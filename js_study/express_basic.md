@@ -3,8 +3,15 @@ Node.jsのWebフレームワーク ```Express``` 触ってみた。
 
 [http://blog.pepese.com/entry/2017/02/16/141653:embed:cite]
 
+ついでに **Yarn** も使ってみる。
 
 # インストール
+
+## Yarnのインストール
+
+```sh
+$ npm install -g yarn
+```
 
 ## Expressのインストール
 
@@ -22,8 +29,8 @@ Expressだけインストールするなら上記。
 $ npm install -g forever
 $ mkdir express-sample          // プロジェクトディレクトリの作成
 $ cd express-sample
-$ npm init
-$ npm install express@5.0.0-alpha.5 body-parser cookie-parser debug morgan pug serve-favicon request fs file-stream-rotator --save
+$ yarn init
+$ yarn add express@5.0.0-alpha.5 body-parser cookie-parser debug morgan pug serve-favicon request fs file-stream-rotator node-sass-middleware
 $ touch .gitignore
 $ mkdir app                     // サーバサイドExpressアプリ用のソースディレクトリ作成
 $ touch app/app.js              // Expressアプリケーション起動ポイントの作成
@@ -36,7 +43,7 @@ $ touch app/config/config.json  // 環境差分ファイル作成
 $ mkdir app/log                 // ログ出力用ディレクトリ作成
 $ touch app/log/.gitkeep
 $ mkdir app/spec                // テストスクリプト用のディレクトリ作成
-$ mkdir app/spec/.gitkeep
+$ touch app/spec/.gitkeep
 ```
 
 Expressアプリケーションのソースディレクトリは ```app/``` だけで完結するようにする。
@@ -65,8 +72,8 @@ $ touch app/views/.gitkeep
 $ mkdir app/public                       // 静的コンテンツ用のディレクトリ作成
 $ mkdir app/public/javascripts           // JS用のディレクトリ作成
 $ touch app/public/javascripts/.gitkeep
-$ mkdir app/public/stylesheets           // CSS用のディレクトリ作成
-$ touch app/public/stylesheets/style.css
+$ mkdir app/public/stylesheets           // SCSS用のディレクトリ作成
+$ touch app/public/stylesheets/style.scss
 $ mkdir app/public/images                // 画像用のディレクトリ作成
 $ touch app/public/images/.gitkeep
 ```
@@ -87,6 +94,7 @@ $ touch app/public/images/.gitkeep
   - Index画面を表示する
 - ```app/controllers/get_users.js```
   - Users画面を表示する
+- ```app/public/stylesheets/style.scss```
 - ```app/views/layout.pug```
 - ```app/views/index.pug```
 - ```app/views/error.pug```
@@ -108,6 +116,10 @@ $ touch app/public/images/.gitkeep
 ### app/controllers/get_users.js
 
 <script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/controllers/get_users.js?footer=0"></script>
+
+### app/public/stylesheets/style.scss
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-sample/app/public/stylesheets/style.scss?footer=0"></script>
 
 ### app/views/layout.pug
 

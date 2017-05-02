@@ -48,10 +48,11 @@ $ express --help
 ## express-generatorで雛形作成
 
 ExpressのデフォルトのView Template Engine は ```Jade``` だが、 Jadeは ```Pug``` にリネームされた。  
-今後、ExpressのデフォルトのView Template EngineはPugに置き換えられるため、ここでは ```Pug``` を使用する。
+今後、ExpressのデフォルトのView Template EngineはPugに置き換えられるため、ここでは ```Pug``` を使用する。  
+また、ここではCSSメタ言語としてSASSを使用する。
 
 ```sh
-$ express express-sample --view=pug --git
+$ express express-generator-sample --view=pug --css=sass --git
 
    create : express-generator-sample
    create : express-generator-sample/package.json
@@ -70,7 +71,7 @@ $ express express-sample --view=pug --git
    create : express-generator-sample/public/javascripts
    create : express-generator-sample/public/images
    create : express-generator-sample/public/stylesheets
-   create : express-generator-sample/public/stylesheets/style.css
+   create : express-generator-sample/public/stylesheets/style.sass
 
    install dependencies:
      $ cd express-generator-sample && npm install
@@ -100,6 +101,7 @@ $ tree
 │   ├── images/
 │   ├── javascripts/
 │   └── stylesheets/
+│       └── style.sass
 ├── routes/          # ルーティング先のスクリプト置き場（MVCのCとロジックに相当）
 │   ├── index.js
 │   └── users.js
@@ -147,3 +149,7 @@ respond with a resource
 ### users.js
 
 <script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-generator-sample/routes/users.js?footer=0"></script>
+
+### style.sass
+
+<script src="http://gist-it.appspot.com/https://github.com/pepese/js-sample/blob/master/express-generator-sample/public/stylesheets/style.sass?footer=0"></script>

@@ -33,6 +33,10 @@ $ ndenv rehash
 $ npm install mocha should chai sinon supertest gulp-debug gulp-istanbul gulp-mocha@3.0.1 isparta --save-dev
 ```
 
+```sh
+$ yarn add mocha should chai sinon supertest gulp-debug gulp-istanbul gulp-mocha@3.0.1 isparta --dev
+```
+
 - **注意**
   - [*istanbul* は 2017/4/22 時点では *gulp-mocha* の4系には対応しておらず、 *3.0.1* にする必要がある](https://github.com/SBoudrias/gulp-istanbul)
 

@@ -61,7 +61,8 @@ src/app/app.component.ts を以下のように修正
 
 ```typescript
 import { Component } from '@angular/core';
-import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js'; # 加筆
+import * as AWS from "aws-sdk";
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 @Component({
   selector: 'app-root',
@@ -70,7 +71,62 @@ import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cogni
 })
 export class AppComponent {
   title = 'app works!';
+
+  constructor(){
+    AWS.config.region = 'ap-northeast-1';
+
+    const data = { UserPoolId: 'ap-northeast-1_xxxxxxxx', ClientId: 'xxxxxxxx'};
+    const userPool = new CognitoUserPool(data);
+    console.log(userPool);
+    //const cognitoUser = userPool.getCurrentUser();
+    //console.log(cognitoUser);
+    const userData = {
+      Username : 'xxxx', // your username here
+      Pool : userPool
+    };
+
+    // サインイン（ログイン）
+    const authenticationData = {
+        Username : 'xxxx', // your username here
+        Password : 'xxxx', // your password here
+    };
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
+    const cognitoUser = new CognitoUser(userData);
+    cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function (result) {
+            console.log('access token + ' + result.getAccessToken().getJwtToken());
+        },
+        onFailure: function(err) {
+            alert(err);
+        }//,
+        //mfaRequired: function(codeDeliveryDetails) {
+        //    const verificationCode = prompt('Please input verification code' ,'');
+        //    cognitoUser.sendMFACode(verificationCode, this);
+        //}
+    });
+
+    // サインアップ（ユーザ作成）
+    //let attributeList = [];
+    //const dataEmail = {
+    //  Name : 'email',
+    //  Value : 'tanakakns@solairo.co.jp' // your email here
+    //};
+    //let attributeEmail = new CognitoUserAttribute(dataEmail);
+    //attributeList.push(attributeEmail);
+    //let cognitoUser;
+    //userPool.signUp('tanaka', 'password', attributeList, null, function(err, result){
+    //  if (err) {
+    //    console.log(err);
+    //    return;
+    //  }
+    //  cognitoUser = result.user;
+    //  console.log('user name is ' + cognitoUser.getUsername());
+    //});
+  }
 }
 ```
 
 `$ ng serve` するとエラー無く起動するところまで確認。
+
+- http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/tutorial-integrating-user-pools-javascript.html
+- http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html#using-amazon-cognito-user-identity-pools-javascript-examples-changing-password

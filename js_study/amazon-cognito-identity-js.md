@@ -8,38 +8,17 @@
 
 # クライアント側（SPA）の準備
 
-- [amazon-cognito-identity-js](https://github.com/aws/amazon-cognito-identity-js/)
-  - typescript typings も含まれている模様
-
-```sh
-$ npm install --save-dev webpack json-loader
-$ npm install --save amazon-cognito-identity-js
-```
-
-- [AWS SDK for JavaScript / Usage with TypeScript](https://www.npmjs.com/package/aws-sdk#usage-with-typescript)
-- [AWS SDK for JavaScriptを使ってブラウザーからCognito User Poolsへサインアップしてみた](http://dev.classmethod.jp/cloud/aws/singup-to-cognito-userpools-using-javascript/)
-- [Serverless + Webpack + TypeScript + tslint メモ](http://qiita.com/y13i/items/3ab22f8f8f1c41c5402f)
-
-# 参考
-
-- [CognitoUserPoolsを使うAngular2 SPAのサンプルを動かす](http://dev.classmethod.jp/cloud/aws/aws-cognito-angular2-quickstart/)
-- [JSON Web Token の効用](http://qiita.com/kaiinui/items/21ec7cc8a1130a1a103a)
-- [Amazon Cognito 認証のフロー](http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html)
-- [Amazon Cognito トークンを使用する](http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
-
-
-# やったことメモ
-
 ```sh
 $ npm upgrade -g @angular/cli
 $ ndenv rehash
 $ ng new cognito-js
 $ cd cognito-js
 $ npm install amazon-cognito-identity-js --save # 依存から aws-sdk も導入される
+$ ng generate service services/cognito
 ```
 
-aws-sdkには@type/aws-sdkが含まれている模様。（[参考](https://www.npmjs.com/package/@types/aws-sdk)）  
-src/tsconfig.app.jsonを以下のように編集。
+`aws-sdk` には `@type/aws-sdk` が含まれている模様。（[参考](https://www.npmjs.com/package/@types/aws-sdk)）  
+`src/tsconfig.app.json` を以下のように編集。
 
 ```javascript
 {
@@ -57,78 +36,78 @@ src/tsconfig.app.jsonを以下のように編集。
 }
 ```
 
-src/app/app.component.ts を以下のように修正
+`src/app/services/cognito.service.ts` を以下のように修正。
 
 ```typescript
-import { Component } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as AWS from "aws-sdk";
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { environment } from '../../environments/environment';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
-  title = 'app works!';
+@Injectable()
+export class CognitoService {
+  userPool = null;
 
-  constructor(){
-    AWS.config.region = 'ap-northeast-1';
+  constructor() {
+    AWS.config.region = environment.region;
+    const data = { UserPoolId: environment.userPoolId, ClientId: environment.clientId};
+    this.userPool = new CognitoUserPool(data);
+  }
 
-    const data = { UserPoolId: 'ap-northeast-1_xxxxxxxx', ClientId: 'xxxxxxxx'};
-    const userPool = new CognitoUserPool(data);
-    console.log(userPool);
-    //const cognitoUser = userPool.getCurrentUser();
-    //console.log(cognitoUser);
-
+  signUp(username, password, email, phone) {
     const userData = {
-      Username : 'xxxx', // your username here
-      Pool : userPool
+      Username : username,
+      Pool : this.userPool
     };
+    let attributeList = [];
+    const dataEmail = {
+      Name : 'email',
+      Value : email
+    };
+    const dataPhoneNumber = {
+      Name : 'phone_number',
+      Value : phone
+    };
+    let attributeEmail = new CognitoUserAttribute(dataEmail);
+    let attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
+    attributeList.push(attributeEmail);
+    attributeList.push(attributePhoneNumber);
+    this.userPool.signUp(username, password, attributeList, null, function(err, result){
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const cognitoUser = result.user;
+      console.log('user name is ' + cognitoUser.getUsername());
+    });
+    return;
+  }
 
+  confirmRegistration(username, verification_code) {
+    const userData = {
+      Username : username,
+      Pool : this.userPool
+    };
+    const cognitoUser = new CognitoUser(userData);
+    cognitoUser.confirmRegistration(verification_code, true, function(err, result) {
+      if (err) {
+        alert(err);
+        return;
+      }
+      console.log('call result: ' + result);
+    });
+    return;
+  }
 
-    // サインアップ（ユーザ作成）
-    //let attributeList = [];
-    //const dataEmail = {
-    //  Name : 'email',
-    //  Value : 'xxxxxxxx'
-    //};
-    //const dataPhoneNumber = {
-    //  Name : 'phone_number',
-    //  Value : 'xxxxxxxx'
-    //};
-    //let attributeEmail = new CognitoUserAttribute(dataEmail);
-    //let attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
-    //attributeList.push(attributeEmail);
-    //attributeList.push(attributePhoneNumber);
-    //let cognitoUser;
-    //userPool.signUp('user name', 'password', attributeList, null, function(err, result){
-    //  if (err) {
-    //    console.log(err);
-    //    return;
-    //  }
-    //  cognitoUser = result.user;
-    //  console.log('user name is ' + cognitoUser.getUsername());
-    //});
-
-    // この時点でSMSでユーザに verification code が送られる
-
-    // 送られてきた verification codeを確認する
-    //const cognitoUser = new CognitoUser(userData);
-    //cognitoUser.confirmRegistration('xxxxxx', true, function(err, result) {
-    //  if (err) {
-    //    alert(err);
-    //    return;
-    //  }
-    //  console.log('call result: ' + result);
-    //});
-
-
-    // サインイン（ログイン）
+  signIn(username, password) {
+    const userData = {
+      Username : username,
+      Pool : this.userPool
+    };
     const cognitoUser = new CognitoUser(userData);
     const authenticationData = {
-        Username : 'xxxx', // your username here
-        Password : 'xxxx', // your password here
+        Username : username,
+        Password : password
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
     cognitoUser.authenticateUser(authenticationDetails, {
@@ -137,17 +116,56 @@ export class AppComponent {
       },
       onFailure: function(err) {
         alert(err);
-      }//,
-      //mfaRequired: function(codeDeliveryDetails) {
-      //    const verificationCode = prompt('Please input verification code' ,'');
-      //    cognitoUser.sendMFACode(verificationCode, this);
-      //}
+      }
     });
+    return;
   }
 }
 ```
 
+`src/app/app.component.ts` を以下のように修正。
+
+```typescript
+import { Component } from '@angular/core';
+import { CognitoService } from './services/cognito.service'; // 追加
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  providers: [CognitoService] // 追加
+})
+export class AppComponent {
+  title = 'app works!';
+
+  constructor(
+    private cognitoService: CognitoService # 追加
+  ){
+    // 好きなこと書く
+    //cognitoService.signUp('username', 'password', 'xxxx@xxxx.com', '+819012345678');
+    //cognitoService.confirmRegistration('username', '123456');
+    //cognitoService.signIn('username', 'password');
+  }
+  // 好きなこと書く
+}
+```
+
+`src/environments/environment.ts` を以下のように修正。
+
+```typescript
+export const environment = {
+  production: false,
+  region: 'ap-northeast-1',
+  userPoolId: 'ap-northeast-1_xxxxxxxxx',
+  clientId: 'xxxxxxxxxxxxxxxxxxxxxxxxxx'
+};
+
+```
+
 `$ ng serve` するとエラー無く起動するところまで確認。
+
+
+# その他参考
 
 - チュートリアル: JavaScript アプリのユーザープールを統合する
   - http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/tutorial-integrating-user-pools-javascript.html
@@ -155,3 +173,4 @@ export class AppComponent {
   - http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
 - プロキシ設定が必要な場合（いらんかった）
   - http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/node-configuring-proxies.html
+- [JSON Web Token の効用](http://qiita.com/kaiinui/items/21ec7cc8a1130a1a103a)

@@ -80,41 +80,29 @@ export class AppComponent {
     console.log(userPool);
     //const cognitoUser = userPool.getCurrentUser();
     //console.log(cognitoUser);
+
     const userData = {
       Username : 'xxxx', // your username here
       Pool : userPool
     };
 
-    // サインイン（ログイン）
-    const authenticationData = {
-        Username : 'xxxx', // your username here
-        Password : 'xxxx', // your password here
-    };
-    const authenticationDetails = new AuthenticationDetails(authenticationData);
-    const cognitoUser = new CognitoUser(userData);
-    cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
-            console.log('access token + ' + result.getAccessToken().getJwtToken());
-        },
-        onFailure: function(err) {
-            alert(err);
-        }//,
-        //mfaRequired: function(codeDeliveryDetails) {
-        //    const verificationCode = prompt('Please input verification code' ,'');
-        //    cognitoUser.sendMFACode(verificationCode, this);
-        //}
-    });
 
     // サインアップ（ユーザ作成）
     //let attributeList = [];
     //const dataEmail = {
     //  Name : 'email',
-    //  Value : 'tanakakns@solairo.co.jp' // your email here
+    //  Value : 'xxxxxxxx'
+    //};
+    //const dataPhoneNumber = {
+    //  Name : 'phone_number',
+    //  Value : 'xxxxxxxx'
     //};
     //let attributeEmail = new CognitoUserAttribute(dataEmail);
+    //let attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
     //attributeList.push(attributeEmail);
+    //attributeList.push(attributePhoneNumber);
     //let cognitoUser;
-    //userPool.signUp('tanaka', 'password', attributeList, null, function(err, result){
+    //userPool.signUp('user name', 'password', attributeList, null, function(err, result){
     //  if (err) {
     //    console.log(err);
     //    return;
@@ -122,11 +110,48 @@ export class AppComponent {
     //  cognitoUser = result.user;
     //  console.log('user name is ' + cognitoUser.getUsername());
     //});
+
+    // この時点でSMSでユーザに verification code が送られる
+
+    // 送られてきた verification codeを確認する
+    //const cognitoUser = new CognitoUser(userData);
+    //cognitoUser.confirmRegistration('xxxxxx', true, function(err, result) {
+    //  if (err) {
+    //    alert(err);
+    //    return;
+    //  }
+    //  console.log('call result: ' + result);
+    //});
+
+
+    // サインイン（ログイン）
+    const cognitoUser = new CognitoUser(userData);
+    const authenticationData = {
+        Username : 'xxxx', // your username here
+        Password : 'xxxx', // your password here
+    };
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
+    cognitoUser.authenticateUser(authenticationDetails, {
+      onSuccess: function (result) {
+        console.log('access token + ' + result.getAccessToken().getJwtToken());
+      },
+      onFailure: function(err) {
+        alert(err);
+      }//,
+      //mfaRequired: function(codeDeliveryDetails) {
+      //    const verificationCode = prompt('Please input verification code' ,'');
+      //    cognitoUser.sendMFACode(verificationCode, this);
+      //}
+    });
   }
 }
 ```
 
 `$ ng serve` するとエラー無く起動するところまで確認。
 
-- http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/tutorial-integrating-user-pools-javascript.html
-- http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html#using-amazon-cognito-user-identity-pools-javascript-examples-changing-password
+- チュートリアル: JavaScript アプリのユーザープールを統合する
+  - http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/tutorial-integrating-user-pools-javascript.html
+- 例: JavaScript SDK の使用
+  - http://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
+- プロキシ設定が必要な場合（いらんかった）
+  - http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/node-configuring-proxies.html

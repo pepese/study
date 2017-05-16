@@ -1,4 +1,18 @@
 
+# Amazon Cognito の概要
+
+Amazon Cognito はユーザ認証やソーシャル認証の機能を提供するAWSのマネージドサービス。  
+大きく以下の機能がある。
+
+- User Pools （ユーザプール）
+  - ユーザーディレクトリを作成・管理し、アプリケーションのサインアップとサインイン機能を提供する
+  - メールや電話番号の検証、MFA 認証などの拡張セキュリティ機能有り
+  - カスタムアトリビュートを設定できる
+- Federated Identities （フェデレーテッドアイデンティティ）
+  - ユーザの ID を作成し、フェデレーテッド ID プロバイダー（Amazon、Facebook、Google、TwitterなどのOpenID Connect プロバイダおよびSAML ID プロバイダ)
+  で認証できる
+- Sync
+
 # Amazon Cognito 側の準備
 
 - User Pool の作成

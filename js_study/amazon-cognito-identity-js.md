@@ -1,3 +1,10 @@
+Cognito を使って Angular アプリからユーザ認証する
+
+Amazon Cognito を使ってユーザ認証ができる Angular アプリを作成してみる。  
+以下の記事の知識を前提とする。
+
+- あ
+- あ
 
 # Amazon Cognito の概要
 
@@ -12,15 +19,38 @@ Amazon Cognito はユーザ認証やソーシャル認証の機能を提供す�
   - ユーザの ID を作成し、フェデレーテッド ID プロバイダー（Amazon、Facebook、Google、TwitterなどのOpenID Connect プロバイダおよびSAML ID プロバイダ)
   で認証できる
 - Sync
+  - アプリケーション関連のユーザーデータのオフラインでのアクセスとデバイス間の同期機能を提供する
 
-# Amazon Cognito 側の準備
+ここでは１つ目の **User Pools** を使用する。
 
-- User Pool の作成
-  - User Pool ID が取得できる
-- App Clients の作成
-  - App Client ID が取得できる
+## Amazon Cognito User Pools の作成
 
-# クライアント側（SPA）の準備
+以下の手順で User Pools を作成する。
+
+1. 「https://ap-northeast-1.console.aws.amazon.com/cognito/」（Tokyoリージョンの場合）へアクセスする
+2. 「Manage your User Pools」をクリック
+3. 「Create a User Pool」をクリック
+4. 任意の User Pool 名を入力して「Step through settings」をクリック
+  - 「Review defaults」を設定すると各種設定画面をスキップしてデフォルト値が設定される
+5. [Attribute 設定画面] ユーザプロファイルとして管理したい項目を選択して「Next step」をクリックする
+  - ここでは「email」「phone number」を選択する
+6. [Policies 設定画面] パスワードの設定ポリシー、ユーザの作成権限ポリシー、使用されないユーザアカウントのTTLを設定して「Next step」をクリックする
+7. [Verifications 設定画面] MFAの使用如何、Verification Code の送信先（E-Mail or SMS）、SMS を使用する場合は Cognito へ Role の付与を設定して「Next step」をクリックする
+  - ユーザがサインアップした際、 E-Mail か SMS へ数字6桁の Verification Code が送付され初回の本人認証に使用する
+  - ここでは email を選択する
+8. [Message Customization 設定画面] 送付するメッセージをカスタマイズして「Next step」をクリックする
+9. [Tags 設定画面] タグを設定して「Next step」をクリックする
+10. [Devices 設定画面] ユーザがアクセスしてきたデバイスを記憶するか否かを設定して「Next step」をクリックする
+11. [App clients 設定画面] AWS-SDK を使用したクライアントアプリケーションから User Pool へアクセスする場合は「Add an app client」を実施して「Next step」をクリックする
+  - Client の作成では、App client 名、 Client のシークレットキーを使用するか否か、認証用の HTTP ヘッダを使用するか否かを設定して」「Create app client」をクリックする
+  - ここでは「Generate client secret」のチェックボックスを外し、シークレットキーを使用しないこととする
+12. [Triggers 設定画面] 認証フローの各種チェックポイントで AWS Lambda を実行するか否かを設定して「Next step」をクリックする
+13. [Review 画面] 最後にこれまでの設定を確認して「Create pool」をクリックする
+
+以上の手順で User Pools が作成できる。  
+Pool details 画面の **Pool Id** と、 App clients 画面の **App client id** は後ほど使用するのでひかえておく。
+
+# クライアント側（SPA）の作成
 
 ```sh
 $ npm upgrade -g @angular/cli

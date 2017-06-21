@@ -174,10 +174,42 @@ input = tf.placeholder(tf.int32, name="input")
 sess.run(run_node, feed_dict={input:3})
 ```
 
+# TFLearn
+
+**TFLearn** はTensorFlowをScikit-learnライク2に使えるライブラリのことで、Githubにサンプルコードが幾つか掲載されている。  
+[参考](http://qiita.com/kenta1984/items/4452e91db806ee765a78)
+
 # TensorBoard
+
+TensorFlow と一緒にインストールされている。
+
+```sh
+$ which tensorboard
+/Users/xxxx/.anyenv/envs/pyenv/shims/tensorboard
+```
+
+## 使い方
+
+コード中に `writer = tf.summary.FileWriter('cnn', sess.graph)` のような感じで表示対象を出力しておき、下記のコマンドで TensorBoard を起動する。
+
+```sh
+$ tensorboard --logdir=./cnn
+```
+
+- [TensorFlowとTensorBoardでニューラルネットワークを可視化](http://qiita.com/sergeant-wizard/items/fdf4d64a0d221a81da34)
 
 # 参考
 
+- [深層学習とTensorFlow入門](https://www.slideshare.net/tak9029/tensorflow-67483532)
+  - 超いいこれ
+- [TensorFlow API Doc](https://www.tensorflow.org/api_docs/python/)
+
+## MNISTチュートリアル
+
 - [TensorFlow 日本語 MNIST](http://www.tensorflow-partner.jp/mnist-beginner)
 - [TensorFlow 公式 MNIST](https://www.tensorflow.org/get_started/mnist/beginners)
-- [深層学習とTensorFlow入門](https://www.slideshare.net/tak9029/tensorflow-67483532)
+- [MNISTチュートリアルの日本語解説](http://qiita.com/sergeant-wizard/items/55256ac6d5d8d7c53a5a)
+- [MNISTチュートリアルの日本語解説](http://qiita.com/haminiku/items/36982ae65a770565458d)
+- [for Beginners と for Experts の間を埋めたい](http://qiita.com/TomokIshii/items/92a266b805d7eee02b1d)
+- [確率的勾配降下法](https://ja.wikipedia.org/wiki/%E7%A2%BA%E7%8E%87%E7%9A%84%E5%8B%BE%E9%85%8D%E9%99%8D%E4%B8%8B%E6%B3%95)
+  - 学習時にトレーニングセットを **ミニバッチ** に分割してそれぞれのミニバッチでパラメータが収束するまで学習を繰り返す方法

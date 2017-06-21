@@ -1,7 +1,9 @@
 TensorFlow触ってみる。
 
 - 環境構築
-- 使い方
+- 用語
+- 代表的な関数
+- MNISTサンプル
 
 # 環境構築
 
@@ -57,10 +59,7 @@ $ python
 
 [参考](https://www.tensorflow.org/install/install_mac)
 
-
-# 使い方
-
-## 用語
+# 用語
 
 - テンソル（Tensor）
   - 線形的な量または線形的な幾何概念を一般化したもの
@@ -76,83 +75,112 @@ $ python
 - セッション（Session）
   - ニューラルネットワークを実行する単位のこと
   - プログラム上ではセッションを作成して、そこに実行するノードを指定することになる
+- ニューラルネットワーク
+  - 層の名前
+    - 入力層
+      - 値を入力するノードの層
+    - 隠れ層、中間層
+      - 入力層と出力層の間のノードの層
+      - ここが多層になるとディープラーニングと言われる
+    - 出力層
+      - 結果を出力するノードの層
 
-## 書き方
 
-### import
+# 代表的な関数
+
+TensorFlow の代表的な関数とその使い方を記載する。  
+詳細は[API Doc](https://www.tensorflow.org/api_docs/python/)を参照。
+
+## import
+
+関数ではないがメモ的に書いておく。
 
 ```python
 import tensorflow as tf
 ```
 
-### 定数
+## 定数
 
 ```python
 # const1 と命名した値 3 の定数ノード
 node1 = tf.constant(3, name="const1")
 ```
 
-### 変数
+## 変数
 
 ```python
 # val1 と命名した初期値 0 の変数ノード
 node2 = tf.Variable(0, name="val1")
 ```
 
-変数には初期化が必要なので注意が必要。
+変数には初期化が必要なので注意が必要。初期化の方法については後述。
 
-### 足し算
+## 足し算
 
 ```python
 # node1 と node2 を足し算するノード
 node3 = tf.add(node1, node2)
 ```
 
-### 変数の初期化
+## 変数の初期化
 
 ```python
 init = tf.global_variables_initializer()
 ```
 
-### セッション（Session）の作成
+## セッション（Session）
+
+### 作成
 
 ```python
 sess = tf.Session()
 ```
 
+> TensorFlow は CPU の拡張命令を使用可能なのだが、これが有効になっていない場合、下記のような警告がでる。
 > ```sh
 > 2017-06-20 16:32:03.465042: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
 > 2017-06-20 16:32:03.465069: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
 > 2017-06-20 16:32:03.465078: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speedup CPU computations.
 > 2017-06-20 16:32:03.465086: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
 > ```
->
-> TensorFlow は CPU の拡張命令を使用可能なのだが、これが有効になっていない場合、上記のような警告がでる。
 
-### セッションで変数を初期化
+### 変数を初期化
 
 ```python
+init = tf.global_variables_initializer()
 sess.run(init)
 ```
 
-### セッションの実行
+もしくはシンプルに以下。
+
+```python
+sess.run(tf.global_variables_initializer())
+```
+
+### 実行
+
+ノードは作成してもセッション上で実行しなければ値は出力されない。  
+セッションの実行方法は以下。
 
 ```python
 print(sess.run([node1, node2]))
 # 出力：[3, 0]
 ```
 
-ノードは作成しても上記のようにセッション上で実行しなければ値は出力されない。
+下記は node1 と node2 の出力を足し算する node3 を実行した結果となる。  
 
 ```python
 print(sess.run(node3))
 # 出力：3
 ```
 
-上記は node1 と node2 の出力を足し算する node3 を実行した結果となる。  
-ここまでで一旦実行はできる。
+## TensorFlow の実行
 
-### assign
+```python
+tf.app.run()
+```
+
+## assign
 
 あるノードのアウトプットを別のノードへインプットする。
 
@@ -160,7 +188,7 @@ print(sess.run(node3))
 assign = tf.assign(from_node, to_node)
 ```
 
-### プレースホルダ
+## プレースホルダ
 
 入力値を色々変更できるノード。
 
@@ -174,9 +202,82 @@ input = tf.placeholder(tf.int32, name="input")
 sess.run(run_node, feed_dict={input:3})
 ```
 
+# MNISTサンプル
+
+公式の[MNISTサンプル](https://www.github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/examples/tutorials/mnist/mnist_softmax.py)を解説する。
+
+```python
+import argparse
+import sys
+
+from tensorflow.examples.tutorials.mnist import input_data
+
+import tensorflow as tf
+
+FLAGS = None
+
+
+def main(_):
+  # データセットの読み込み
+  mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
+  # mnist.train.images        ・・・訓練用入力データの配列
+  # mnist.train.labels        ・・・訓練用正解データの配列
+  # mnist.train.next_batch(50)・・・訓練データを50個取り出して、(入力データ,正解データ)のタプルで返却
+
+  # 入力層 28x28=784 の画像
+  x = tf.placeholder(tf.float32, [None, 784])
+  # 隠れ層の重み 入力が784 出力が10
+  W = tf.Variable(tf.zeros([784, 10]))
+  # バイアス 固定の入力 出力が10
+  b = tf.Variable(tf.zeros([10]))
+  # 出力層 [None, 10]のベクトル
+  y = tf.matmul(x, W) + b
+
+  # 教師データの入れ物
+  y_ = tf.placeholder(tf.float32, [None, 10])
+
+  # The raw formulation of cross-entropy,
+  #
+  #   tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(tf.nn.softmax(y)),
+  #                                 reduction_indices=[1]))
+  #
+  # can be numerically unstable.
+  #
+  # So here we use tf.nn.softmax_cross_entropy_with_logits on the raw
+  # outputs of 'y', and then average across the batch.
+
+  # 交差エントロピーの作成
+  # logits：最終的な推計値。softmaxはする必要ない
+  # labels：教師データ
+  # tf.reduce_mean：平均値
+  cross_entropy = tf.reduce_mean(
+      tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
+  train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+
+  sess = tf.InteractiveSession()
+  tf.global_variables_initializer().run()
+  # Train
+  for _ in range(1000):
+    batch_xs, batch_ys = mnist.train.next_batch(100)
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+
+  # Test trained model
+  correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+  accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+  print(sess.run(accuracy, feed_dict={x: mnist.test.images,
+                                      y_: mnist.test.labels}))
+
+if __name__ == '__main__':
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--data_dir', type=str, default='/tmp/tensorflow/mnist/input_data',
+                      help='Directory for storing input data')
+  FLAGS, unparsed = parser.parse_known_args()
+  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+```
+
 # TFLearn
 
-**TFLearn** はTensorFlowをScikit-learnライク2に使えるライブラリのことで、Githubにサンプルコードが幾つか掲載されている。  
+**TFLearn** はTensorFlowをScikit-learnライクに使えるライブラリのことで、Githubにサンプルコードが幾つか掲載されている。  
 [参考](http://qiita.com/kenta1984/items/4452e91db806ee765a78)
 
 # TensorBoard
@@ -202,14 +303,15 @@ $ tensorboard --logdir=./cnn
 
 - [深層学習とTensorFlow入門](https://www.slideshare.net/tak9029/tensorflow-67483532)
   - 超いいこれ
-- [TensorFlow API Doc](https://www.tensorflow.org/api_docs/python/)
 
-## MNISTチュートリアル
+# MNISTチュートリアル
 
 - [TensorFlow 日本語 MNIST](http://www.tensorflow-partner.jp/mnist-beginner)
 - [TensorFlow 公式 MNIST](https://www.tensorflow.org/get_started/mnist/beginners)
 - [MNISTチュートリアルの日本語解説](http://qiita.com/sergeant-wizard/items/55256ac6d5d8d7c53a5a)
 - [MNISTチュートリアルの日本語解説](http://qiita.com/haminiku/items/36982ae65a770565458d)
 - [for Beginners と for Experts の間を埋めたい](http://qiita.com/TomokIshii/items/92a266b805d7eee02b1d)
+- [交差エントロピー（cross entropy）](https://ja.wikipedia.org/wiki/%E4%BA%A4%E5%B7%AE%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AD%E3%83%94%E3%83%BC)
+  - コスト関数として使用する
 - [確率的勾配降下法](https://ja.wikipedia.org/wiki/%E7%A2%BA%E7%8E%87%E7%9A%84%E5%8B%BE%E9%85%8D%E9%99%8D%E4%B8%8B%E6%B3%95)
   - 学習時にトレーニングセットを **ミニバッチ** に分割してそれぞれのミニバッチでパラメータが収束するまで学習を繰り返す方法

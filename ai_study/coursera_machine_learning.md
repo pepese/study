@@ -85,6 +85,9 @@ $$h_\theta(x) = \frac{1}{1+e^{-\theta^Tx}}$$
 
 上記は、「 $\theta^Tx \geqq 0$ のときは×」「 $\theta^Tx < 0$ のときは○」と見ることができる。
 
+> ### 活性化関数（activate function）
+> シグモイド関数は、ニューラルネットワークにおける **活性化関数**（ **activate function** ）の一種。伝達関数（transfer function）とも呼ばれる。
+
 ### ロジスティック回帰のコスト関数
 
 ロジスティック回帰のコスト関数には以下の特徴が必要になる。

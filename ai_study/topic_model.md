@@ -105,7 +105,8 @@ $$Cov[x,x']=E[(x-E(x))(x'-E(x'))]$$
 $$KL(p,q)=\sum_x p(x)\log \frac{p(x)}{q(x)}$$
 
 KLダイバージェンスは「 $KL(p,q) \geq 0$ 」を満たし、2つの確率分布が同じである必要十分条件は「 $KL(p,q)=0 \Longleftrightarrow p=q$ 」。  
-なお、KLダイバージェンスは「 $KL(p,q) \neq KL(q,p)$ 」であるため、数学的な意味では距離ではない。
+なお、KLダイバージェンスは「 $KL(p,q) \neq KL(q,p)$ 」であるため、数学的な意味では距離ではない。  
+KLダイバージェンスの他には、 **ジェンセン・シャノン・ダイバージェンス** （ **JSダイバージェンス** ; **Jensen-Shannon divergence** , **JS divergence** ）などがある。
 
 ### 1.1.9. 連続確率変数
 

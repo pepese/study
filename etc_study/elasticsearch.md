@@ -76,7 +76,7 @@ $ curl -X PUT http://<IPアドレス>:<port番号>/<インデックス名>
 ## インデックス一覧
 
 ```sh
-$ curl -X PUT http://<IPアドレス>:<port番号>/<インデックス名>/_aliases?pretty
+$ curl http://<IPアドレス>:<port番号>/_aliases?pretty
 ```
 
 ## インデックス削除

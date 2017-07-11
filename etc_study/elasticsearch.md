@@ -221,6 +221,16 @@ String, valid date: “2014-09-15"     | “date”
 String: “foo bar”                    | “string”
 ```
 
+## 検索
+
+```sh
+# 複数インデックスにまたがって検索する場合
+$ curl -X GET http://<IPアドレス>:<port番号>/_search
+
+# 同じインデックス内の複数タイプにまたがって検索する場合
+$ curl -X GET http://<IPアドレス>:<port番号>/＜インデックス名＞/_search
+```
+
 # 参考
 
 - セミナー
@@ -230,3 +240,31 @@ String: “foo bar”                    | “string”
   - https://github.com/Kakakakakku/elasticsearch-hands-on
 - 記事
   - http://dev.classmethod.jp/server-side/elasticsearch-getting-started-08/
+
+
+# AWS ElasticSearch Service
+
+以下の各ステップで各種設定を行う。
+
+- Step 1: Define domain
+  - Domain Name
+    - Elasticsearch domain name
+  - Version
+    - Elasticsearch version
+- Step 2: Configure cluster
+  - Node configuration
+    - Instance count
+    - Instance type
+    - Enable dedicated master
+    - Enable zone awareness
+  - Storage configuration
+    - Storage type
+    - EBS volume type
+    - EBS volume size
+  - Snapshot configuration
+    - Automated snapshot start hour
+  - Advanced options
+    - rest.action.multi.allow_explicit_index
+    - indices.fielddata.cache.size
+- Step 3: Set up access policy
+  - access policy

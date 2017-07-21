@@ -57,6 +57,8 @@ $ python
 >>> import tensorflow as tf
 ```
 
+Python3 しか入っていなければ、 `pip3` ではなく `pip` でおk。
+
 [参考](https://www.tensorflow.org/install/install_mac)
 
 # 用語

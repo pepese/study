@@ -1,5 +1,9 @@
 パターン認識と機械学習  
-略称「 **PRML** 」。
+略称「 **PRML** 」。  
+
+- [本書の最新情報](http://research.microsoft.com/~cmbishop/PRML)
+  - [ここ](https://www.microsoft.com/en-us/research/people/cmbishop/#prml-book)にリダイレクトされる
+- [日本語版Webページ](http://ibisforest.org/index.php?PRML)
 
 - 上：1〜5章
 - 下：6章

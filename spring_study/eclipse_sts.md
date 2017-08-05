@@ -97,7 +97,7 @@ Mark set: ctrl + space
   - ```/Applications/STS.app/Contents/MacOS``` （Mac + Homebrewの場合）
 
 ```sh
-$ cp ~/.m2/repository/org/projectlombok/lombok/1.16.10/lombok-1.16.10.jar /Applications/STS.app/Contents/MacOS/lombok.jar
+$ cp ~/.m2/repository/org/projectlombok/lombok/1.16.16/lombok-1.16.16.jar /Applications/STS.app/Contents/MacOS/lombok.jar
 ```
 
 - STS.iniの編集

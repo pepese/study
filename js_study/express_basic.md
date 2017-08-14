@@ -3,33 +3,33 @@ Node.jsのWebフレームワーク ```Express``` 触ってみた。
 
 [http://blog.pepese.com/entry/2017/02/16/141653:embed:cite]
 
-ついでに **Yarn** も使ってみる。
+ついでに **Yarn** も使ってみる。  
+なお、ここでは express-generator は使用しない。
 
-# インストール
+# 環境構築
 
 ## Yarnのインストール
 
 ```sh
 $ npm install -g yarn
+$ ndenv rehash
 ```
-
-## Expressのインストール
-
-```sh
-$ npm install express --save
-```
-
-Expressだけインストールするなら上記。
 
 # Expressアプリケーションの構築
 
 ## Expressプロジェクトの作成
 
+プロジェクト作成は以下。
+
 ```sh
-$ npm install -g forever
 $ mkdir express-sample          // プロジェクトディレクトリの作成
 $ cd express-sample
 $ yarn init
+```
+
+Angular CLI 等で既にプロジェクトを作成している場合は、上記は行わず以下から実行。
+
+```sh
 $ yarn add express@5.0.0-alpha.5 body-parser cookie-parser debug morgan pug serve-favicon request fs file-stream-rotator node-sass-middleware
 $ touch .gitignore
 $ mkdir app                     // サーバサイドExpressアプリ用のソースディレクトリ作成
@@ -46,9 +46,30 @@ $ mkdir app/spec                // テストスクリプト用のディレクト
 $ touch app/spec/.gitkeep
 ```
 
-Expressアプリケーションのソースディレクトリは ```app/``` だけで完結するようにする。
+Expressアプリケーションのソースディレクトリは ```app/``` だけで完結するようにする。  
+また、 forever を導入しておく。
 
-### フロントエンドアプリケーションをプロジェクトに同梱する場合
+```sh
+$ yarn global add forever // npm install -g コマンド互換
+$ ndenv rehash
+```
+
+さらに `.gitignore` に以下を追加しておく。
+
+```
+# Logs
+/app/log
+*.log
+
+# dependencies
+/node_modules
+
+# System Files
+.DS_Store
+Thumbs.db
+```
+
+### フロントエンドアプリケーションをプロジェクトに同梱する場合、REST APIアプリを作成する場合
 
 この場合、以下のようにディレクトリを作成する。
 
@@ -60,9 +81,10 @@ $ touch app/api/.gitkeep
 フロントエンドアプリケーションのトランスパイル結果は ```express-sample/dist``` に出力されるものとし、サーバサイドアプリケーション（ ```express-sample/app``` ）は ```express-sample/dist``` をExpressの公開ディレクトリとする。  
 フロントエンドアプリケーションは ```app/api``` に実装したAPIにアクセスする。
 
-### フロントエンドアプリケーションをプロジェクトに同梱せず、Expressからテンプレートエンジンを使用する場合
+### フロントエンドアプリケーションをプロジェクトに同梱せず、ExpressからテンプレートエンジンVIEWを使用する場合
 
-この場合、以下のようにディレクトリを作成する。
+この場合、以下のようにディレクトリを作成する。  
+なお、 SCSS を使用する。
 
 ```sh
 $ mkdir app/controllers                  // VIEW用のコントローラディレクトリ作成

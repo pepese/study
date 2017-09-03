@@ -5,8 +5,6 @@ STS（Spring Tool Suite）のインストールと設定についてまとめる
 # インストール
 
 [公式](http://www.springsource.org/downloads/sts-ggts)から入手。  
-筆者は「STS-3.8.3.RELEASE」を使用した。（EclipseはNeon）  
-
 もしくはMacユーザは下記のようにHomebrewで導入可能。
 
 ```sh
@@ -66,6 +64,12 @@ CheckStyleの設定ファイルからフォーマッタのルールを生成す�
 
 1. 「ウィンドウ」→「設定」
 1. 「Java」→「コード・スタイル」→「フォーマッタ―」
+
+### XML
+
+個人的な好みだが、 XML ファイルのインデントはスペース 2 つがいい。
+
+- [Spring Tool Suite]→[環境設定]→[XML]→[XML Files]→[Editor]の「Indent using spaces」を設定するだけ
 
 ## Emacs風のキーバイドに変える
 

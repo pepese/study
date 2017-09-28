@@ -64,28 +64,28 @@ Python3 しか入っていなければ、 `pip3` ではなく `pip` でおk。
 # 用語
 
 - テンソル（Tensor）
-  - 線形的な量または線形的な幾何概念を一般化したもの
-  - 規定を選べば、多次元の配列として表現できるようなもの
-  - テンソル自身は、特定の座標系によらないで定まる対象
-  - **多次元配列** でおk
-  - テンソルの種類
-    - 0階テンソル・・・スカラ、ただの数値
-    - 1階テンソル・・・ベクトル、配列
-    - 2階テンソル・・・行列、二次元配列
-    - 3階テンソル・・・行列が複数個あるもの、三次元配列
-    - 4階テンソル・・・行列が複数個あるものが複数個あるもの、四次元配列
+    - 線形的な量または線形的な幾何概念を一般化したもの
+    - 規定を選べば、多次元の配列として表現できるようなもの
+    - テンソル自身は、特定の座標系によらないで定まる対象
+    - **多次元配列** でおk
+    - テンソルの種類
+        - 0階テンソル・・・スカラ、ただの数値
+        - 1階テンソル・・・ベクトル、配列
+        - 2階テンソル・・・行列、二次元配列
+        - 3階テンソル・・・行列が複数個あるもの、三次元配列
+        - 4階テンソル・・・行列が複数個あるものが複数個あるもの、四次元配列
 - セッション（Session）
-  - ニューラルネットワークを実行する単位のこと
-  - プログラム上ではセッションを作成して、そこに実行するノードを指定することになる
+    - ニューラルネットワークを実行する単位のこと
+    - プログラム上ではセッションを作成して、そこに実行するノードを指定することになる
 - ニューラルネットワーク
-  - 層の名前
-    - 入力層
-      - 値を入力するノードの層
-    - 隠れ層、中間層
-      - 入力層と出力層の間のノードの層
-      - ここが多層になるとディープラーニングと言われる
-    - 出力層
-      - 結果を出力するノードの層
+    - 層の名前
+        - 入力層
+            - 値を入力するノードの層
+        - 隠れ層、中間層
+            - 入力層と出力層の間のノードの層
+            - ここが多層になるとディープラーニングと言われる
+        - 出力層
+            - 結果を出力するノードの層
 
 
 # 代表的な関数
@@ -115,6 +115,31 @@ node1 = tf.constant(3, name="const1")
 node2 = tf.Variable(0, name="val1")
 ```
 
+TensorFlow では **重み $w$** を変数（ Variable ）で置く。
+
+## 行列
+
+```python
+x = tf.placeholder(tf.float32, [None, 5])
+```
+
+TensorFlowでは **学習データ/入力値 $x$** をプレースホルダ（ placeholder : 入力値を色々変更できるノード ）で置く。  
+第一引数は要素のデータ型、第二引数は行列のサイズ（ None にすることで任意のサイズを指定できる）。  
+データ型には以下がある。
+
+|データ型|説明|
+|:---|:---|
+|tf.float32|32 ビット浮動小数点型|
+|tf.float64|64 ビット浮動小数点型|
+|tf.int8|8 ビット符号付き整数型|
+|tf.int16|16 ビット符号付き整数型|
+|tf.int32|32 ビット符号付き整数型|
+|tf.int64|64 ビット符号付き整数型|
+|tf.string|文字列型|
+|tf.bool|真偽値型|
+|tf.complex|複素数型|
+
+
 変数には初期化が必要なので注意が必要。初期化の方法については後述。
 
 ## 足し算
@@ -129,6 +154,8 @@ node3 = tf.add(node1, node2)
 ```python
 init = tf.global_variables_initializer()
 ```
+
+かつては `initialize_all_variables` だったが、 r0.12 から Deprecated になっているので `global_variables_initializer` を使用する。
 
 ## セッション（Session）
 
@@ -190,9 +217,7 @@ tf.app.run()
 assign = tf.assign(from_node, to_node)
 ```
 
-## プレースホルダ
-
-入力値を色々変更できるノード。
+## プレースホルダへの値の入力
 
 ```python
 input = tf.placeholder(tf.int32, name="input")
@@ -217,7 +242,6 @@ from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 
 FLAGS = None
-
 
 def main(_):
   # データセットの読み込み
@@ -277,12 +301,14 @@ if __name__ == '__main__':
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
 ```
 
-# TFLearn
+# その他 TensorFlow 系ライブラリ・ツール
+
+## TFLearn
 
 **TFLearn** はTensorFlowをScikit-learnライクに使えるライブラリのことで、Githubにサンプルコードが幾つか掲載されている。  
 [参考](http://qiita.com/kenta1984/items/4452e91db806ee765a78)
 
-# TensorBoard
+## TensorBoard
 
 TensorFlow と一緒にインストールされている。
 
@@ -291,7 +317,7 @@ $ which tensorboard
 /Users/xxxx/.anyenv/envs/pyenv/shims/tensorboard
 ```
 
-## 使い方
+### 使い方
 
 コード中に `writer = tf.summary.FileWriter('cnn', sess.graph)` のような感じで表示対象を出力しておき、下記のコマンドで TensorBoard を起動する。
 
@@ -304,7 +330,9 @@ $ tensorboard --logdir=./cnn
 # 参考
 
 - [深層学習とTensorFlow入門](https://www.slideshare.net/tak9029/tensorflow-67483532)
-  - 超いいこれ
+    - 超いいこれ
+- 良書
+    - [TensorFlowで学ぶディープラーニング入門 ~畳み込みニューラルネットワーク徹底解説~](https://www.amazon.co.jp/TensorFlow%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E5%85%A5%E9%96%80-%E7%95%B3%E3%81%BF%E8%BE%BC%E3%81%BF%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%A9%E3%83%AB%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E5%BE%B9%E5%BA%95%E8%A7%A3%E8%AA%AC-%E4%B8%AD%E4%BA%95-%E6%82%A6%E5%8F%B8/dp/4839960887/ref=sr_1_1?s=books&ie=UTF8&qid=1506557557&sr=1-1&keywords=tensorflow%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E5%85%A5%E9%96%80)
 
 # MNISTチュートリアル
 
@@ -314,6 +342,6 @@ $ tensorboard --logdir=./cnn
 - [MNISTチュートリアルの日本語解説](http://qiita.com/haminiku/items/36982ae65a770565458d)
 - [for Beginners と for Experts の間を埋めたい](http://qiita.com/TomokIshii/items/92a266b805d7eee02b1d)
 - [交差エントロピー（cross entropy）](https://ja.wikipedia.org/wiki/%E4%BA%A4%E5%B7%AE%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AD%E3%83%94%E3%83%BC)
-  - コスト関数として使用する
+    - コスト関数として使用する
 - [確率的勾配降下法](https://ja.wikipedia.org/wiki/%E7%A2%BA%E7%8E%87%E7%9A%84%E5%8B%BE%E9%85%8D%E9%99%8D%E4%B8%8B%E6%B3%95)
-  - 学習時にトレーニングセットを **ミニバッチ** に分割してそれぞれのミニバッチでパラメータが収束するまで学習を繰り返す方法
+    - 学習時にトレーニングセットを **ミニバッチ** に分割してそれぞれのミニバッチでパラメータが収束するまで学習を繰り返す方法

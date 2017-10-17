@@ -101,3 +101,25 @@ $ docker run hello-world
 ```
 
 なお、Docker VM上に起動したDockerコンテナに接続する場合は、 ```docker-machine IP VM名``` でIPを確認してから接続する。
+
+# MySQLを起動してみる
+
+MySQLのイメージを取得して起動。
+
+```sh
+$ docker run --name mysql-57 -e MYSQL_ROOT_PASSWORD=password -d mysql/mysql-server:5.7
+```
+
+コンテナへ接続。
+
+```sh
+$ docker exec -it mysql-57 mysql -uroot -ppassword
+mysql>
+```
+
+切断。停止。
+
+```sh
+mysql> exit;
+$ docker stop mysql-57
+```

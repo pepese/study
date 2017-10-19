@@ -133,7 +133,7 @@ int main() {
     - `$ g++ sample_class.cc sample.cc`
     - ヘッダファイルは入れない
 
-## 明示的なインスタンスの生成と破棄
+### 明示的なインスタンスの生成と破棄
 
 sample.cc
 ```cpp
@@ -151,6 +151,100 @@ int main() {
 ```
 
 - **new** 、 **delete** 演算子を使用する
+
+## テンプレート
+
+Javaでいうジェネリクス。
+
+### テンプレート関数
+
+template_sample.cc
+```cpp
+#include <iostream>
+#include <string>
+
+// テンプレート関数
+template <typename T>
+T add(T x, T y){
+    return x + y;
+}
+
+int main(){
+    std::cout << add<int>(1, 2) << std::endl;
+    std::cout << add<std::string>("A", "B") << std::endl;
+    return 0;
+}
+```
+
+- テンプレートの定義
+    - `template <typename T>`
+- 複数のテンプレートの定義
+    - `template<typename T, typename S>`
+
+### テンプレートクラス
+
+template_sample_class.h
+```cpp
+#ifndef _TEMPLATE_SAMPLE_CLASS_H_
+#define _TEMPLATE_SAMPLE_CLASS_H_
+
+template <typename T>
+class TemplateSample {
+private:
+    T x;
+    T y;
+public:
+    void set(T x, T y);
+    T add();
+};
+
+#endif // _TEMPLATE_SAMPLE_CLASS_H_
+```
+
+template_sample_class.cc
+```cpp
+#include "template_sample_class.h"
+
+#include <string>
+
+template <typename T>
+void TemplateSample<T>::set(T x, T y) {
+    this->x = x;
+    this->y = y;
+}
+
+template <typename T>
+T TemplateSample<T>::add() {
+    return this->x + this->y;
+}
+
+// 明示的テンプレートのインスタンス化
+// 使用できる型を指定する
+template class TemplateSample<int>;
+template class TemplateSample<std::string>;
+```
+
+template_sample.cc
+```cpp
+#include <iostream>
+#include <string>
+
+#include "template_sample_class.h"
+
+int main(){
+    TemplateSample<int> int_obj;
+    int_obj.set(1, 2);
+    std::cout << int_obj.add() << std::endl;
+
+    TemplateSample<std::string>* obj_string = new TemplateSample<std::string>();
+    obj_string->set("A", "B");
+    std::cout << obj_string->add() << std::endl;
+    delete obj_string;
+
+    return 0;
+}
+```
+
 
 # ライブラリ
 

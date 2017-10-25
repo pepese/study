@@ -120,7 +120,7 @@ int main() {
     - `:` より右はメンバ変数の初期化（無くてもいい）、カンマ区切りで複数
 - デストラクタ
     - クラス名の最初に `~` をつけるとデストラクタ
-- 擬似命令
+- 擬似命令（特にここでは、 **インクルードガード** という）
     - `#ifndef` 、 `#define` 、 `#endif`
     - プリプロセッサによって処理される命令
     - 複数のファイルから1つのヘッダファイルをインクルードされた際の重複定義を回避する
@@ -245,6 +245,30 @@ int main(){
 }
 ```
 
+## 例外
+
+標準ライブラリ `<stdexcept>` の中に例外が定義されている。（ [参考](https://cpprefjp.github.io/reference/stdexcept.html) ）  
+例えば、配列で確保したメモリ領域外にアクセスした場合の処理は **try-catch** で実現できる。
+
+```cpp
+#include <stdexcept>
+
+void sampleFunction(Vector& v) {
+    try {
+        v[v.size()] = 1;
+    } catch(out_of_range) {
+        // 例外処理を記述
+    }
+}
+```
+
+## その他キーワード
+
+- **コピー** と **ムーブ**
+- **ラムダ式**
+- **特殊化**
+- **具体化**
+
 
 # ライブラリ
 
@@ -352,6 +376,70 @@ After sort
 
 Macの場合は `brew` で入手できれば `/usr/local/Cellar` 配下に配備されるので、そちらにパスを通す。  
 `brew` で入手できないものはコンパイル済みのものを入手、もしくはソースを入手してローカルでコンパイルする。
+
+## 標準ライブラリ
+
+代表的な標準ライブラリは以下。
+
+|#include|代表的なオブジェクト、関数|説明|
+|:---|:---|:---|
+|algorithm|copy(),find(),sort()|コンテナに対して適用するアルゴリスム|
+|array|array|固定長オブジェクトを保持するシーケンスコンテナ|
+|chrono|duration,time_point|時間に関するユーティリティ|
+|cmath|sqrt(),pow()|算術演算ユーティリティ|
+|complex|complex,sqrt(),pow()|複素数|
+|fstream|fstream,ifstream,ofstream|ファイル入出力ストリーム|
+|future|future,promise|非同期処理|
+|iostream|istream,ostream,cin,cout|入出力ストリーム|
+|map|map,nultimap|指定された型の要素の探索木機能を提供するコンテナ|
+|memory|unique_ptr,shared_ptr,allocator|メモリアロケータ、スマートポインタ、GCなどのメモリに関するユーティリティ機能|
+|random|default_random_engine,normal_distribution|乱数|
+|regex|regex,smatch|正規表現|
+|string|string,basic_string|文字列リテラル、文字列処理|
+|set|set,multiset|指定された型の要素の集合を提供するコンテナ|
+|sstream|istrstream,ostrstream|文字列ストリーム|
+|thread|thread|スレッド機能|
+|unordered_map|unordered_map,unordered_multimap|指定された型の要素の連想配列を提供するコンテナ|
+|utility|move(),swap(),pair|各種ユーティリティ機能|
+|vector|vector|指定された型の要素が並んだシケーンスであるコンテナ|
+
+オブジェクトを内部に保持することを目的としたクラスを **コンテナ** と呼ぶ。
+
+## ヘッダファイル
+
+インターフェースを定義し、 **ヘッダファイル** `.h` にまとめて `#include` する。  
+ヘッダファイルには以下のようなものが含まれる。
+
+|項目|記述例|
+|:---|:---|
+|名前付き名前空間|namespace N {}|
+|inline 名前空間|inline namespace N {}|
+|型の定義|struct Point {int x, y;}|
+|テンプレートの宣言|template<typename T> class Z|
+|テンプレートの定義|template<typename T> class V {}|
+|関数の宣言|extern int strlen(const char*);|
+|inline 関数の定義|inline char get(char* p) {}|
+|constexpr 関数の定義|constexpr int fac(int n) { return (n<2) ? 1 : n*fac(n-1);}|
+|データの宣言|extern int a;|
+|const の定義|const float pi = 3.141593|
+|constexpr の定義|const float pi2 = pi*pi|
+|列挙体|enum class Light {red, yellow, green};|
+|名前の宣言|class Matrix;|
+|型別名|using value_type = long;|
+|コンパイル時のアサーション|static_assert(4<=sizeof(int), "small ints");|
+|インクルード|#include <algorithm>|
+|マクロ定義|#define VERSION 12.03|
+|条件コンパイル|#ifdef __cplusplus|
+
+以下のようなものは含むべきではない。
+
+|項目|記述例|
+|:---|:---|
+|通常の関数定義|char get(char* p) {}|
+|データの定義|int a;|
+|集成体の定義|short tbl[] = {};|
+|名前無し名前空間|namespace {}|
+|using|using namespace Foo;|
 
 ## 参考
 

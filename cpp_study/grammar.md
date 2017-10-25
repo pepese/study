@@ -446,6 +446,10 @@ Macの場合は `brew` で入手できれば `/usr/local/Cellar` 配下に配備
 - [C++の標準ライブラリを簡単に眺めてみよう](https://www.slideshare.net/maraigue/c-73294701)
 - [外部ライブラリ](https://cpprefjp.github.io/third_party_library.html)
 
-# make
+# ビルドツール
+
+## make
 
 http://qnighy.hatenablog.com/entry/20100117/1263729044
+
+## GYP

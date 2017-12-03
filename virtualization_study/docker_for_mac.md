@@ -62,7 +62,7 @@ defaultという名前のDocker VMをVirtualBoxで作成する場合、以下の
 $ docker-machine create --driver virtualbox default
 ```
 
-作成されたDocker VMは```~/.docker/machine/machines/default```ディレクトリに存在する。  
+作成されたDocker VMは `~/.docker/machine/machines/default` ディレクトリに存在する。  
 作成したDocker VMの一覧は以下のコマンドで確認できる。
 
 ```bash
@@ -87,20 +87,20 @@ default（Docker VM）が起動している状態で以下のコマンドを実�
 docker-machine env default
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="tcp://192.168.99.100:2376"
-export DOCKER_CERT_PATH="/Users/tanakakns/.docker/machine/machines/default"
+export DOCKER_CERT_PATH="/Users/xxxx/.docker/machine/machines/default"
 export DOCKER_MACHINE_NAME="default"
 # Run this command to configure your shell:
 # eval $(docker-machine env default)
 ```
 
-上記にあるコマンドの出力結果の通り、```eval $(docker-machine env default)``` を実行することにより、default（Docker VM）上にdockerコマンドでコンテナをコントロールを行う環境が整う。  
-以下のコマンドを実行して```Hello from Docker!```と表示されれば確認完了。
+上記にあるコマンドの出力結果の通り、 `eval $(docker-machine env default)` を実行することにより、default（Docker VM）上にdockerコマンドでコンテナをコントロールを行う環境が整う。  
+以下のコマンドを実行して `Hello from Docker!` と表示されれば確認完了。
 
 ```bash
 $ docker run hello-world
 ```
 
-なお、Docker VM上に起動したDockerコンテナに接続する場合は、 ```docker-machine IP VM名``` でIPを確認してから接続する。
+なお、Docker VM上に起動したDockerコンテナに接続する場合は、 `docker-machine IP VM名` でIPを確認してから接続する。
 
 # MySQLを起動してみる
 

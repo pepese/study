@@ -1,2 +1,0 @@
-- [これからReactを勉強する人が最初に見るべきスライド７選](http://uxmilk.jp/43555)
-- [ReactでTDD（テスト駆動開発）を始めよう](http://postd.cc/getting-started-with-tdd-in-react/)
